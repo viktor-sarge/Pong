@@ -10,6 +10,8 @@ startbutton.addEventListener('click', ()=>{
   paused = false;
 });
 
+const scores = {p1:0,p2:0}
+
 function anglePointingRight(angle) {
   return Math.cos(angle) > 0; // Positive cosine means right
 }
@@ -52,6 +54,14 @@ const ball = new Ball(canvas.width / 2, canvas.height / 2, 10, 7, Math.PI / 14);
 const player = new Paddle(100, canvas.height/2, 20, 100, 'white')
 const net = new Net('white');
 
+function drawScores(scores) {
+  ctx.fillStyle = "white";
+  ctx.font = "48px Vermin";
+  ctx.textAlign = "center";
+  ctx.fillText(scores.p1, canvas.width / 4, 60);
+  ctx.fillText(scores.p2, (canvas.width / 4) * 3, 60);
+}
+
 function gameLoop() {
     // Request the next frame of the loop
     requestAnimationFrame(gameLoop);
@@ -90,6 +100,7 @@ function gameLoop() {
     net.draw(ctx, canvas);
     ball.draw(ctx, canvas);
     player.draw(ctx);
+    drawScores(scores);
   }
   
   // Start the game loop
