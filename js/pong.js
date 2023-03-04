@@ -2,6 +2,10 @@ import Ball from "./objects/ball.js";
 import Paddle from "./objects/paddle.js";
 import Net from "./objects/net.js";
 
+const startscreen = document.getElementById('startscreen');
+const startbutton = document.getElementById('startbutton');
+startbutton.addEventListener('click', ()=>{startscreen.classList.toggle('hidden')});
+
 function anglePointingRight(angle) {
   return Math.cos(angle) > 0; // Positive cosine means right
 }
