@@ -50,6 +50,24 @@ window.addEventListener('resize', () => {
     canvas.height = window.innerHeight;
 });
 
+let bounces = 20;
+const radius = 150;
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+
+function drawDots() {
+  ctx.fillStyle = "white";
+  for (let i = 0; i < bounces; i++) {
+    const angle = i * (Math.PI * 2 / bounces);
+    const x = centerX + radius * Math.cos(angle);
+    const y = centerY + radius * Math.sin(angle);
+    ctx.beginPath();
+    ctx.arc(x, y, 3, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.fill();
+  }
+}
+
 const ball = new Ball(canvas.width / 2, canvas.height / 2, 10, 17, Math.PI / 14);
 const player = new Paddle(100, canvas.height/2, 20, 100, 'white')
 const net = new Net('white');
@@ -91,8 +109,11 @@ function gameLoop() {
           : ball.x = player.x + player.width + ball.radius;
       ball.angle = Math.PI - ball.angle;
       scores.p1++;
+      bounces--;
+      if(bounces === 0) {
+        paused = true;
+      }
     }
-    
   }
   
   function draw() {
@@ -102,7 +123,8 @@ function gameLoop() {
     ball.draw(ctx, canvas);
     player.draw(ctx);
     drawScores(scores);
-  }
+    drawDots();
+  } 
   
   // Start the game loop
   gameLoop();
