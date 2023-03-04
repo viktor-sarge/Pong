@@ -31,12 +31,29 @@ export default class Ball {
       }
     }
   
-    draw(ctx) {
+    draw(ctx, canvas) {
+
+      // Set the shadow color, offset, and blur
+      
+      ctx.shadowColor = 'lightgray';
+      ctx.shadowBlur = 25;
+
+      // Calculate the distance between the ball and the center of the screen
+      const distanceFromCenter = canvas.width / 2 - Math.abs(this.x - canvas.width / 2);
+
+      // Calculate the offset of the shadow based on the distance from the center
+      const shadowOffset = Math.max(10, (distanceFromCenter / 5));
+
+      ctx.save()
+      // Set the shadow offset based on the distance from the center
+      ctx.shadowOffsetY = shadowOffset;
+
       // Draw the ball as a circle
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
       ctx.fillStyle = "#fff";
       ctx.fill();
       ctx.closePath();
+      ctx.restore();
     }
   }

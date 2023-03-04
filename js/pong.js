@@ -82,7 +82,7 @@ function gameLoop() {
     // Clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     net.draw(ctx, canvas);
-    ball.draw(ctx);
+    ball.draw(ctx, canvas);
     player.draw(ctx);
   }
   
