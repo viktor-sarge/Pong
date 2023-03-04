@@ -4,7 +4,11 @@ import Net from "./objects/net.js";
 
 const startscreen = document.getElementById('startscreen');
 const startbutton = document.getElementById('startbutton');
-startbutton.addEventListener('click', ()=>{startscreen.classList.toggle('hidden')});
+let paused = true;
+startbutton.addEventListener('click', ()=>{
+  startscreen.classList.toggle('hidden');
+  paused = false;
+});
 
 function anglePointingRight(angle) {
   return Math.cos(angle) > 0; // Positive cosine means right
@@ -52,11 +56,13 @@ function gameLoop() {
     // Request the next frame of the loop
     requestAnimationFrame(gameLoop);
 
-    // Update the game state
-    update();
+    if(!paused){
+      // Update the game state
+      update();
 
-    // Draw the game
-    draw();
+      // Draw the game
+      draw();
+    }
   }
 
   function update() {
