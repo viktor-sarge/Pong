@@ -50,7 +50,7 @@ window.addEventListener('resize', () => {
     canvas.height = window.innerHeight;
 });
 
-const ball = new Ball(canvas.width / 2, canvas.height / 2, 10, 7, Math.PI / 14);
+const ball = new Ball(canvas.width / 2, canvas.height / 2, 10, 17, Math.PI / 14);
 const player = new Paddle(100, canvas.height/2, 20, 100, 'white')
 const net = new Net('white');
 
@@ -78,7 +78,7 @@ function gameLoop() {
   function update() {
 
     // Check if the arrow up or arrow down key is pressed and call the corresponding method on the paddle
-        ball.update(canvas);
+    ball.update(canvas);
     
     if (arrowUpPressed) {
         player.moveUp();
@@ -86,10 +86,11 @@ function gameLoop() {
         player.moveDown(canvas);
     }
     if(player.intersects(ball)) {
-        anglePointingRight(ball.angle) 
-            ? ball.x = player.x - ball.radius 
-            : ball.x = player.x + player.width + ball.radius;
-        ball.angle = Math.PI - ball.angle;
+      anglePointingRight(ball.angle) 
+          ? ball.x = player.x - ball.radius 
+          : ball.x = player.x + player.width + ball.radius;
+      ball.angle = Math.PI - ball.angle;
+      scores.p1++;
     }
     
   }
