@@ -1,12 +1,13 @@
 export default class bouncemeter {
     constructor(bounces, radius, color) {
+        this.standardBouncesAmount = bounces;
         this.bounces = bounces;
         this.radius = radius;
-        this.color = "white";
+        this.color = color;
     }
 
     draw(ctx, canvasCenterX, canvasCenterY) {
-        
+
         ctx.fillStyle = this.color;
         for (let i = 0; i < this.bounces; i++) {
             const angle = i * (Math.PI * 2 / this.bounces);
@@ -25,5 +26,9 @@ export default class bouncemeter {
 
     decrease() {
         this.bounces--;
+    }
+
+    reset() {
+        this.bounces = this.standardBouncesAmount;
     }
 }
