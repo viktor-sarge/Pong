@@ -5,6 +5,7 @@
 		"app",
 		"scores",
 		"multiplayer",
-		"controllers"
+		"controllers",
+		"restart"
 	]
 }

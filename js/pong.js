@@ -2,6 +2,7 @@ import Ball from "./objects/ball.js";
 import Paddle from "./objects/paddle.js";
 import Net from "./objects/net.js";
 import scoreboard from "./objects/scoreboard.js";
+import bouncemeter from "./objects/bouncemeter.js";
 
 // Canvas and contex refs
 const canvas = document.getElementById('myCanvas');
@@ -25,10 +26,6 @@ const restartButton = document.getElementById('restartButton');
 let multiplayer = false;
 let paused = true;
 let gameOver = false;
-let bounces = 21;
-
-// Config values
-const bounceMeterRadius = 150;
 
 // Keyhandler variables
 let arrowUpPressed = false;
@@ -39,20 +36,6 @@ let sPressed = false;
 // Helper function checking if ball moves right or left by radian angle
 function anglePointingRight(angle) {
   return Math.cos(angle) > 0; // Positive cosine means right
-}
-
-// Bounce countdown meter
-function drawDots() {
-  ctx.fillStyle = "white";
-  for (let i = 0; i < bounces; i++) {
-    const angle = i * (Math.PI * 2 / bounces);
-    const x = canvasCenterX + bounceMeterRadius * Math.cos(angle);
-    const y = canvasCenterY + bounceMeterRadius * Math.sin(angle);
-    ctx.beginPath();
-    ctx.arc(x, y, 3, 0, Math.PI * 2);
-    ctx.closePath();
-    ctx.fill();
-  }
 }
 
 // Single player gamestart event listener
@@ -76,7 +59,6 @@ restartButton.addEventListener('click', () => {
   gameOver = false;
   paused = false;
   scorecounter.reset();
-  bounces = 21;
   ball.serve(canvas);
 })
 
@@ -129,6 +111,7 @@ const player = new Paddle(100, canvas.height/2, 20, 100, 'white')
 const player2 = new Paddle(canvas.width-20-100, canvas.height/2, 20, 100, 'white')
 const net = new Net('white');
 const scorecounter = new scoreboard();
+const bouncecounter = new bouncemeter(21,150, 'white');
 
 // Get controllers
 let gamepads = navigator.getGamepads(); // get array of connected gamepads
@@ -195,8 +178,8 @@ function update() {
         : ball.x = player.x + player.width + ball.radius;
     ball.angle = Math.PI - ball.angle;
     scorecounter.score('p1');
-    bounces--;
-    if(bounces === 0) {
+    bouncecounter.decrease();
+    if(bouncecounter.remaining() === 0) {
       paused = true;
       gameOver = true;
     }
@@ -209,8 +192,8 @@ function update() {
         : ball.x = player2.x + player2.width + ball.radius;
     ball.angle = Math.PI - ball.angle;
     scorecounter.score('p2');
-    bounces--;
-    if(bounces === 0) {
+    bouncecounter.decrease();
+    if(bouncecounter.remaining()  === 0) {
       paused = true;
       gameOver = true;
     }
@@ -225,7 +208,7 @@ function draw() {
   player.draw(ctx);
   if(multiplayer) player2.draw(ctx);
   scorecounter.draw(ctx, canvas);
-  drawDots();
+  bouncecounter.draw(ctx, canvasCenterX, canvasCenterY);
   if(gameOver) {
     ctx.fillStyle = "white";
     ctx.font = "96px Vermin";
