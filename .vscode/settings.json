@@ -1,3 +1,10 @@
 {
-	"conventionalCommits.scopes": ["startscreen", "ball", "app", "scores"]
+	"conventionalCommits.scopes": [
+		"startscreen",
+		"ball",
+		"app",
+		"scores",
+		"multiplayer",
+		"controllers"
+	]
 }
