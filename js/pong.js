@@ -1,6 +1,7 @@
 import Ball from "./objects/ball.js";
 import Paddle from "./objects/paddle.js";
 import Net from "./objects/net.js";
+import scoreboard from "./objects/scoreboard.js";
 
 // Canvas and contex refs
 const canvas = document.getElementById('myCanvas');
@@ -24,7 +25,6 @@ const restartButton = document.getElementById('restartButton');
 let multiplayer = false;
 let paused = true;
 let gameOver = false;
-const scores = {p1:0,p2:0}
 let bounces = 21;
 
 // Config values
@@ -55,15 +55,6 @@ function drawDots() {
   }
 }
 
-// Scoreboard function, takes an object with keys p1, p2 as input.
-function drawScores(scores) {
-  ctx.fillStyle = "white";
-  ctx.font = "48px Vermin";
-  ctx.textAlign = "center";
-  ctx.fillText(scores.p1, canvas.width / 4, 60);
-  ctx.fillText(scores.p2, (canvas.width / 4) * 3, 60);
-}
-
 // Single player gamestart event listener
 startbutton.addEventListener('click', ()=>{
   startscreen.classList.toggle('hidden');
@@ -84,8 +75,7 @@ restartButton.addEventListener('click', () => {
   // reset the game
   gameOver = false;
   paused = false;
-  scores.p1 = 0;
-  scores.p2 = 0;
+  scorecounter.reset();
   bounces = 21;
   ball.serve(canvas);
 })
@@ -138,6 +128,7 @@ const ball = new Ball(canvas.width / 2, canvas.height / 2, 10, 17, Math.PI / 14)
 const player = new Paddle(100, canvas.height/2, 20, 100, 'white')
 const player2 = new Paddle(canvas.width-20-100, canvas.height/2, 20, 100, 'white')
 const net = new Net('white');
+const scorecounter = new scoreboard();
 
 // Get controllers
 let gamepads = navigator.getGamepads(); // get array of connected gamepads
@@ -203,7 +194,7 @@ function update() {
         ? ball.x = player.x - ball.radius 
         : ball.x = player.x + player.width + ball.radius;
     ball.angle = Math.PI - ball.angle;
-    scores.p1++;
+    scorecounter.score('p1');
     bounces--;
     if(bounces === 0) {
       paused = true;
@@ -217,7 +208,7 @@ function update() {
         ? ball.x = player2.x - ball.radius 
         : ball.x = player2.x + player2.width + ball.radius;
     ball.angle = Math.PI - ball.angle;
-    scores.p2++;
+    scorecounter.score('p2');
     bounces--;
     if(bounces === 0) {
       paused = true;
@@ -227,22 +218,21 @@ function update() {
 }
 
 function draw() {
-  // Clear the canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);  // clear canvas
   net.draw(ctx, canvas);
   ball.draw(ctx, canvas);
   player.draw(ctx);
   if(multiplayer) player2.draw(ctx);
-  drawScores(scores);
+  scorecounter.draw(ctx, canvas);
   drawDots();
   if(gameOver) {
     ctx.fillStyle = "white";
     ctx.font = "96px Vermin";
     ctx.textAlign = "center";
-    const message = scores.p1 > scores.p2 ? 'Player 1 wins' : 'Player 2 wins';
+    const message = scorecounter.winner() === 'p1' ? 'Player 1 wins' : 'Player 2 wins';
     ctx.fillText(message, canvas.width / 2, canvas.height/2);
-    // show the restart button
-    restartButton.style.display = 'block';
+    restartButton.style.display = 'block'; // Show restart button
   } else if (paused && !gameOver) {
     ctx.fillStyle = "white";
     ctx.font = "96px Vermin";
