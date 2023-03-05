@@ -29,7 +29,7 @@ let arrowDownPressed = false;
 let wPressed = false;
 let sPressed = false;
 
-// Add event listeners for arrow key events
+// Add event listeners for keyboard events
 document.addEventListener("keydown", function(event) {
     if (event.code === "ArrowUp") {
       arrowUpPressed = true;
@@ -37,7 +37,7 @@ document.addEventListener("keydown", function(event) {
       arrowDownPressed = true;
     }
   });
-  
+
   document.addEventListener("keyup", function(event) {
     if (event.code === "ArrowUp") {
       arrowUpPressed = false;
@@ -70,7 +70,6 @@ const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-
 let bounces = 20;
 const radius = 150;
 let centerX = canvas.width / 2;
@@ -84,6 +83,7 @@ window.addEventListener('resize', () => {
   centerY = canvas.height / 2;
 });
 
+// Bounce countdown meter
 function drawDots() {
   ctx.fillStyle = "white";
   for (let i = 0; i < bounces; i++) {
@@ -97,11 +97,13 @@ function drawDots() {
   }
 }
 
+// Game objects
 const ball = new Ball(canvas.width / 2, canvas.height / 2, 10, 17, Math.PI / 14);
 const player = new Paddle(100, canvas.height/2, 20, 100, 'white')
 const player2 = new Paddle(canvas.width-20-100, canvas.height/2, 20, 100, 'white')
 const net = new Net('white');
 
+// Scoreboard function, takes an object with keys p1, p2 as input.
 function drawScores(scores) {
   ctx.fillStyle = "white";
   ctx.font = "48px Vermin";
@@ -109,6 +111,13 @@ function drawScores(scores) {
   ctx.fillText(scores.p1, canvas.width / 4, 60);
   ctx.fillText(scores.p2, (canvas.width / 4) * 3, 60);
 }
+
+
+// Controllers
+let gamepads = navigator.getGamepads(); // get array of connected gamepads
+let gamepad = gamepads[0];
+let gamepad2 = gamepads[1];
+let stickY, p2stickY;
 
 function gameLoop() {
     // Request the next frame of the loop
@@ -128,6 +137,7 @@ function gameLoop() {
     // Check if the arrow up or arrow down key is pressed and call the corresponding method on the paddle
     ball.update(canvas);
     
+    // Movement by keyboard
     if (wPressed) {
         player.moveUp();
     } else if (sPressed) {
@@ -138,6 +148,34 @@ function gameLoop() {
     } else if (multiplayer && arrowDownPressed) {
       player2.moveDown(canvas);
     }
+
+    // Movement by gamepads
+    gamepads = navigator.getGamepads();
+    gamepad = gamepads[0];
+    gamepad2 = gamepads[1];
+    if (gamepad) { // check if gamepad exists
+      // read state of left analog stick
+      stickY = gamepad.axes[1];
+      // map stick value to paddle movement
+      if (stickY < -0.5) { // move left paddle up
+        player.moveUp(canvas);
+      } else if (stickY > 0.5) { // move left paddle down
+        player.moveDown(canvas);
+      }
+    }
+
+    if (gamepad2) { // check if gamepad exists
+      // read state of left analog stick
+      p2stickY = gamepad2.axes[1];
+      // map stick value to paddle movement
+      if (p2stickY < -0.5) { // move left paddle up
+        player2.moveUp(canvas);
+      } else if (p2stickY > 0.5) { // move left paddle down
+        player2.moveDown(canvas);
+      }
+    }
+
+    // Collision checking p1 / ball
     if(player.intersects(ball)) {
       anglePointingRight(ball.angle) 
           ? ball.x = player.x - ball.radius 
@@ -149,6 +187,8 @@ function gameLoop() {
         paused = true;
       }
     }
+
+    // Collision checking p2 / ball
     if(multiplayer && player2.intersects(ball)) {
       anglePointingRight(ball.angle) 
           ? ball.x = player2.x - ball.radius 
