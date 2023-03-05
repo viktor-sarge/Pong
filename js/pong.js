@@ -4,11 +4,18 @@ import Net from "./objects/net.js";
 
 const startscreen = document.getElementById('startscreen');
 const startbutton = document.getElementById('startbutton');
+const startbutton2player = document.getElementById('startbutton2player');
+let multiplayer = false;
 let paused = true;
 startbutton.addEventListener('click', ()=>{
   startscreen.classList.toggle('hidden');
   paused = false;
 });
+startbutton2player.addEventListener('click', ()=>{
+  startscreen.classList.toggle('hidden');
+  paused = false;
+  multiplayer = true;
+})
 
 const scores = {p1:0,p2:0}
 
@@ -16,9 +23,11 @@ function anglePointingRight(angle) {
   return Math.cos(angle) > 0; // Positive cosine means right
 }
 
-// Keep track of the arrow key states
+// Keep track of the key states
 let arrowUpPressed = false;
 let arrowDownPressed = false;
+let wPressed = false;
+let sPressed = false;
 
 // Add event listeners for arrow key events
 document.addEventListener("keydown", function(event) {
@@ -37,6 +46,21 @@ document.addEventListener("keydown", function(event) {
     }
   });
 
+  document.addEventListener("keydown", function(event) {
+    if (event.code === "KeyW") {
+      wPressed = true;
+    } else if (event.code === "KeyS") {
+      sPressed = true;
+    }
+});
+
+document.addEventListener("keyup", function(event) {
+    if (event.code === "KeyW") {
+      wPressed = false;
+    } else if (event.code === "KeyS") {
+      sPressed = false;
+    }
+});
 
 
 const canvas = document.getElementById('myCanvas');
@@ -75,6 +99,7 @@ function drawDots() {
 
 const ball = new Ball(canvas.width / 2, canvas.height / 2, 10, 17, Math.PI / 14);
 const player = new Paddle(100, canvas.height/2, 20, 100, 'white')
+const player2 = new Paddle(canvas.width-20-100, canvas.height/2, 20, 100, 'white')
 const net = new Net('white');
 
 function drawScores(scores) {
@@ -103,10 +128,15 @@ function gameLoop() {
     // Check if the arrow up or arrow down key is pressed and call the corresponding method on the paddle
     ball.update(canvas);
     
-    if (arrowUpPressed) {
+    if (wPressed) {
         player.moveUp();
-    } else if (arrowDownPressed) {
+    } else if (sPressed) {
         player.moveDown(canvas);
+    }
+    if (multiplayer && arrowUpPressed) {
+      player2.moveUp();
+    } else if (multiplayer && arrowDownPressed) {
+      player2.moveDown(canvas);
     }
     if(player.intersects(ball)) {
       anglePointingRight(ball.angle) 
@@ -114,6 +144,17 @@ function gameLoop() {
           : ball.x = player.x + player.width + ball.radius;
       ball.angle = Math.PI - ball.angle;
       scores.p1++;
+      bounces--;
+      if(bounces === 0) {
+        paused = true;
+      }
+    }
+    if(multiplayer && player2.intersects(ball)) {
+      anglePointingRight(ball.angle) 
+          ? ball.x = player2.x - ball.radius 
+          : ball.x = player2.x + player2.width + ball.radius;
+      ball.angle = Math.PI - ball.angle;
+      scores.p2++;
       bounces--;
       if(bounces === 0) {
         paused = true;
@@ -127,6 +168,7 @@ function gameLoop() {
     net.draw(ctx, canvas);
     ball.draw(ctx, canvas);
     player.draw(ctx);
+    if(multiplayer) player2.draw(ctx);
     drawScores(scores);
     drawDots();
   } 

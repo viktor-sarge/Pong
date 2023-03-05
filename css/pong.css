@@ -19,18 +19,32 @@ body {
 	width: 100%;
 	background-color: #293941;
 	color: #761f28;
-	text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #00e6e6,
-		0 0 40px #00e6e6, 0 0 55px #00e6e6, 0 0 75px #00e6e6;
+	text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #df1b1e,
+		0 0 40px #62ea2c, 0 0 55px #df1b1e, 0 0 75px #df1b1e;
 }
 @keyframes glow {
 	0% {
-		font-size: 4vh;
+		font-size: 3vh;
 	}
 	50% {
-		font-size: 5vh;
+		font-size: 3.3vh;
 	}
 	100% {
-		font-size: 4vh;
+		font-size: 3vh;
+	}
+}
+
+.rotate-text {
+	transform-style: preserve-3d; /* ensure proper rendering in 3D space */
+	animation: rotateY 6s ease infinite;
+}
+
+@keyframes rotateY {
+	from {
+		transform: rotateY(0deg);
+	}
+	to {
+		transform: rotateY(360deg);
 	}
 }
 
@@ -50,7 +64,18 @@ body {
 	flex-direction: column;
 }
 
+#startbutton_container {
+	display: flex;
+}
+
 #startbutton {
+	font-size: 4vh;
+	padding: 1vh;
+	font-family: 'Vermin';
+	animation: glow 4s ease-in-out infinite;
+}
+#startbutton2player {
+	margin-top: 1ex;
 	font-size: 4vh;
 	padding: 1vh;
 	font-family: 'Vermin';
