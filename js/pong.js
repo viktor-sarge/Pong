@@ -25,7 +25,7 @@ const restartButton = document.getElementById('restartButton');
 // Game state variables
 let multiplayer = false;
 let paused = true;
-let gameOver = false;
+let gameOver = true;
 
 // Keyhandler variables
 let arrowUpPressed = false;
@@ -44,7 +44,7 @@ function resetGame() {
   bouncecounter.reset();
   ball.serve(canvas);
 }
-function startTimer() {
+function startCountdown() {
   // Start countdown until game restart
   timerIntervalId = setInterval(() => {
     if (countdown > 0) {
@@ -52,7 +52,9 @@ function startTimer() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // write the countdown on the canvas
+      ctx.fillStyle = "white";
       ctx.font = '96px Vermin';
+      console.log(countdown, canvas.width / 2, canvas.height / 2);
       ctx.fillText(countdown, canvas.width / 2, canvas.height / 2);
 
       countdown--;
@@ -76,20 +78,43 @@ function anglePointingRight(angle) {
 // Single player gamestart event listener
 startbutton.addEventListener('click', ()=>{
   startscreen.classList.toggle('hidden');
-  paused = false;
+
+  // Immediately display the first number of the countdown
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "white";
+  ctx.font = '96px Vermin';
+  ctx.fillText(countdown, canvas.width / 2, canvas.height / 2);
+  countdown--;
+
+  startCountdown();
 });
 
 // Multiplayer game start event listener
 startbutton2player.addEventListener('click', ()=>{
   startscreen.classList.toggle('hidden');
-  paused = false;
   multiplayer = true;
+
+  // Immediately display the first number of the countdown
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "white";
+  ctx.font = '96px Vermin';
+  ctx.fillText(countdown, canvas.width / 2, canvas.height / 2);
+  countdown--;
+
+  startCountdown();
 })
 
 // Restart event listener
 restartButton.addEventListener('click', () => {
   restartButton.style.display = 'none';
-  startTimer();
+
+  // Immediately display the first number of the countdown
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "white";
+  ctx.font = '96px Vermin';
+  ctx.fillText(countdown, canvas.width / 2, canvas.height / 2);
+  countdown--;
+  startCountdown();
 })
 
 // Keyboard controls event listers
