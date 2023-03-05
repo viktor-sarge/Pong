@@ -56,4 +56,9 @@ export default class Ball {
       ctx.closePath();
       ctx.restore();
     }
+
+    serve(canvas) {
+      this.x = canvas.width / 2;
+      this.y = canvas.height / 2;
+    }
   }

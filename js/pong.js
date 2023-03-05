@@ -18,6 +18,7 @@ let canvasCenterY = canvas.height / 2;
 const startscreen = document.getElementById('startscreen');
 const startbutton = document.getElementById('startbutton');
 const startbutton2player = document.getElementById('startbutton2player');
+const restartButton = document.getElementById('restartButton');
 
 // Game state variables
 let multiplayer = false;
@@ -74,6 +75,19 @@ startbutton2player.addEventListener('click', ()=>{
   startscreen.classList.toggle('hidden');
   paused = false;
   multiplayer = true;
+})
+
+// Restart event listener
+restartButton.addEventListener('click', () => {
+  restartButton.style.display = 'none';
+
+  // reset the game
+  gameOver = false;
+  paused = false;
+  scores.p1 = 0;
+  scores.p2 = 0;
+  bounces = 21;
+  ball.serve(canvas);
 })
 
 // Keyboard controls event listers
@@ -227,6 +241,8 @@ function draw() {
     ctx.textAlign = "center";
     const message = scores.p1 > scores.p2 ? 'Player 1 wins' : 'Player 2 wins';
     ctx.fillText(message, canvas.width / 2, canvas.height/2);
+    // show the restart button
+    restartButton.style.display = 'block';
   } else if (paused && !gameOver) {
     ctx.fillStyle = "white";
     ctx.font = "96px Vermin";
