@@ -54,7 +54,6 @@ function startCountdown() {
       // write the countdown on the canvas
       ctx.fillStyle = "white";
       ctx.font = '96px Vermin';
-      console.log(countdown, canvas.width / 2, canvas.height / 2);
       ctx.fillText(countdown, canvas.width / 2, canvas.height / 2);
 
       countdown--;
@@ -233,6 +232,8 @@ function update() {
         : ball.x = player.x + player.width + ball.radius;
     ball.angle = Math.PI - ball.angle;
     scorecounter.score('p1');
+    player.shrink();
+    player2.grow();
     bouncecounter.decrease();
     if(bouncecounter.remaining() === 0) {
       paused = true;
@@ -247,6 +248,8 @@ function update() {
         : ball.x = player2.x + player2.width + ball.radius;
     ball.angle = Math.PI - ball.angle;
     scorecounter.score('p2');
+    player2.shrink();
+    player.grow();
     bouncecounter.decrease();
     if(bouncecounter.remaining()  === 0) {
       paused = true;

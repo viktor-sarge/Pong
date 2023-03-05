@@ -6,6 +6,9 @@ export default class Paddle {
       this.height = height;
       this.color = color;
       this.speed = 7;
+      this.originalHeight = height;
+      this.rescaleStep = 10;
+      this.minHeight = 40;
     }
   
     moveUp() {
@@ -37,4 +40,19 @@ export default class Paddle {
       // If the ball is within both the horizontal and vertical edges of the paddle, it intersects with the paddle
       return true;
     }
+
+    shrink() {
+      if(this.height > this.minHeight) { 
+        this.height = this.height - this.rescaleStep;
+        this.y = this.y + this.rescaleStep / 2;
+      }
+    }
+
+    grow() {
+      if(this.height < this.originalHeight) {
+        this.height = this.height + this.rescaleStep;
+        this.y = this.y - this.rescaleStep / 2;
+      }
+    }
+
   }
