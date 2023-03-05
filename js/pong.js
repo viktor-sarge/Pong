@@ -33,6 +33,41 @@ let arrowDownPressed = false;
 let wPressed = false;
 let sPressed = false;
 
+// Game restart related variables
+let countdown = 3;
+let timerIntervalId;
+
+function resetGame() {
+  gameOver = false;
+  paused = false;
+  scorecounter.reset();
+  bouncecounter.reset();
+  ball.serve(canvas);
+}
+function startTimer() {
+  // Start countdown until game restart
+  timerIntervalId = setInterval(() => {
+    if (countdown > 0) {
+      // clear the canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // write the countdown on the canvas
+      ctx.font = '96px Vermin';
+      ctx.fillText(countdown, canvas.width / 2, canvas.height / 2);
+
+      countdown--;
+    } else {
+      // clear the canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      resetGame()
+
+      // stop the timer
+      clearInterval(timerIntervalId);
+      countdown = 3;
+    }
+  }, 1000);
+}
+
 // Helper function checking if ball moves right or left by radian angle
 function anglePointingRight(angle) {
   return Math.cos(angle) > 0; // Positive cosine means right
@@ -54,12 +89,7 @@ startbutton2player.addEventListener('click', ()=>{
 // Restart event listener
 restartButton.addEventListener('click', () => {
   restartButton.style.display = 'none';
-
-  // reset the game
-  gameOver = false;
-  paused = false;
-  scorecounter.reset();
-  ball.serve(canvas);
+  startTimer();
 })
 
 // Keyboard controls event listers
