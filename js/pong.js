@@ -22,6 +22,7 @@ const startbutton2player = document.getElementById('startbutton2player');
 // Game state variables
 let multiplayer = false;
 let paused = true;
+let gameOver = false;
 const scores = {p1:0,p2:0}
 let bounces = 21;
 
@@ -133,7 +134,7 @@ let stickY, p2stickY;
 function gameLoop() {
   requestAnimationFrame(gameLoop);
 
-  if(!paused){
+  if(!paused && !gameOver){
     update();
     draw();
   }
@@ -192,6 +193,7 @@ function update() {
     bounces--;
     if(bounces === 0) {
       paused = true;
+      gameOver = true;
     }
   }
 
@@ -205,6 +207,7 @@ function update() {
     bounces--;
     if(bounces === 0) {
       paused = true;
+      gameOver = true;
     }
   }
 }
@@ -218,6 +221,18 @@ function draw() {
   if(multiplayer) player2.draw(ctx);
   drawScores(scores);
   drawDots();
+  if(gameOver) {
+    ctx.fillStyle = "white";
+    ctx.font = "96px Vermin";
+    ctx.textAlign = "center";
+    const message = scores.p1 > scores.p2 ? 'Player 1 wins' : 'Player 2 wins';
+    ctx.fillText(message, canvas.width / 2, canvas.height/2);
+  } else if (paused && !gameOver) {
+    ctx.fillStyle = "white";
+    ctx.font = "96px Vermin";
+    ctx.textAlign = "center";
+    ctx.fillText('Paused', canvas.width / 2, canvas.height/2);
+  }
 }
 
 // Start the game loop
