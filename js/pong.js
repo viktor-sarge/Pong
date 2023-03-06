@@ -159,6 +159,7 @@ window.addEventListener('resize', () => {
   canvas.height = window.innerHeight;
   canvasCenterX = canvas.width / 2;
   canvasCenterY = canvas.height / 2;
+  player2.realign(canvas.width-20-100);
 });
 
 // Init game objects

@@ -63,4 +63,8 @@ export default class Paddle {
       this.height = this.originalHeight;
     }
 
+    realign(x) {
+      this.x = x;
+    }
+
   }
