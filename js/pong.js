@@ -3,6 +3,7 @@ import Paddle from "./objects/paddle.js";
 import Net from "./objects/net.js";
 import scoreboard from "./objects/scoreboard.js";
 import bouncemeter from "./objects/bouncemeter.js";
+import texts from './data/strings.json' assert {type: 'json'};
 
 // Canvas and contex refs
 const canvas = document.getElementById('myCanvas');
@@ -272,16 +273,23 @@ function draw() {
   bouncecounter.draw(ctx, canvasCenterX, canvasCenterY);
   if(gameOver) {
     ctx.fillStyle = "white";
-    ctx.font = "96px Vermin";
+    ctx.font = "48px Vermin";
     ctx.textAlign = "center";
-    const message = scorecounter.winner() === 'p1' ? 'Player 1 wins' : 'Player 2 wins';
+    let message;
+    if(scorecounter.winner() === 'p1') {
+      const randomIndex = Math.floor(Math.random() * texts.winner.p1.length);
+      message = texts.winner.p1[randomIndex];
+    } else {
+      const randomIndex = Math.floor(Math.random() * texts.winner.p2.length);
+      message = texts.winner.p2[randomIndex];
+    }
     ctx.fillText(message, canvas.width / 2, canvas.height/2);
     restartButton.style.display = 'block'; // Show restart button
   } else if (paused && !gameOver) {
     ctx.fillStyle = "white";
     ctx.font = "96px Vermin";
     ctx.textAlign = "center";
-    ctx.fillText('Paused', canvas.width / 2, canvas.height/2);
+    ctx.fillText(texts.states.paused, canvas.width / 2, canvas.height/2);
   }
 }
 
