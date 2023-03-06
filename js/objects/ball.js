@@ -1,9 +1,10 @@
 export default class Ball {
-    constructor(x, y, radius, speed) {
+    constructor(x, y, radius, speed, angleRanges) {
       this.x = x;
       this.y = y;
       this.radius = radius;
       this.speed = speed;
+      this.angleRanges = angleRanges;
       this.angle = this.getRandomAngle();
     }
 
@@ -62,13 +63,12 @@ export default class Ball {
       this.angle = this.getRandomAngle();
     }
 
-    // Helper function to create random angles for the ball
     getRandomAngle() {
-      const angleRanges = [
-        [2.55, 2.85], [0.3, 0.6],
-        [3.45, 3.75], [5.7, 6.0]]; // The ranges in radians
-      const randomRangeIndex = Math.floor(Math.random() * angleRanges.length);
-      const [minAngle, maxAngle] = angleRanges[randomRangeIndex];
+      // Pick one of the provided allowed angle ranges
+      const randomRangeIndex = Math.floor(Math.random() * this.angleRanges.length);
+      // Get the min max from chosen range
+      const [minAngle, maxAngle] = this.angleRanges[randomRangeIndex];
+      // Calcuate an angle within the chosen range
       return Math.random() * (maxAngle - minAngle) + minAngle;
     }
   }
