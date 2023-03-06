@@ -40,6 +40,8 @@ let timerIntervalId;
 function resetGame() {
   gameOver = false;
   paused = false;
+  player.reset();
+  player2.reset();
   scorecounter.reset();
   bouncecounter.reset();
   ball.serve(canvas);

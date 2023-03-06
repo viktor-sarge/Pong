@@ -6,9 +6,11 @@ export default class Paddle {
       this.height = height;
       this.color = color;
       this.speed = 7;
-      this.originalHeight = height;
       this.rescaleStep = 10;
       this.minHeight = 40;
+      this.originalHeight = height;
+      this.originalX = x;
+      this.originalY = y;
     }
   
     moveUp() {
@@ -53,6 +55,12 @@ export default class Paddle {
         this.height = this.height + this.rescaleStep;
         this.y = this.y - this.rescaleStep / 2;
       }
+    }
+
+    reset() {
+      this.x = this.originalX;
+      this.y = this.originalY
+      this.height = this.originalHeight;
     }
 
   }
