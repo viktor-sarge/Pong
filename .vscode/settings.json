@@ -6,6 +6,10 @@
 		"scores",
 		"multiplayer",
 		"controllers",
-		"restart"
+		"restart",
+		"mechanics",
+		"rescale",
+		"text",
+		"config"
 	]
 }

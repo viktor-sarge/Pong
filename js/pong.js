@@ -36,7 +36,7 @@ let wPressed = false;
 let sPressed = false;
 
 // Game restart related variables
-let countdown = 3;
+let countdown = CONF.GAME.COUNTDOWN.NR_OF_STEPS;
 let timerIntervalId;
 
 function resetGame() {
@@ -56,7 +56,7 @@ function startCountdown() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // write the countdown on the canvas
-      ctx.fillStyle = "white";
+      ctx.fillStyle = CONF.GAME.BASE_COLOR;
       ctx.font = '96px Vermin';
       ctx.fillText(countdown, canvas.width / 2, canvas.height / 2);
 
@@ -68,9 +68,9 @@ function startCountdown() {
 
       // stop the timer
       clearInterval(timerIntervalId);
-      countdown = 3;
+      countdown = CONF.GAME.COUNTDOWN.NR_OF_STEPS;
     }
-  }, 1000);
+  }, CONF.GAME.COUNTDOWN.STEP_DELAY_IN_MS);
 }
 
 // Helper function checking if ball moves right or left by radian angle
@@ -84,7 +84,7 @@ startbutton.addEventListener('click', ()=>{
 
   // Immediately display the first number of the countdown
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "white";
+  ctx.fillStyle = CONF.GAME.BASE_COLOR;
   ctx.font = '96px Vermin';
   ctx.fillText(countdown, canvas.width / 2, canvas.height / 2);
   countdown--;
@@ -99,7 +99,7 @@ startbutton2player.addEventListener('click', ()=>{
 
   // Immediately display the first number of the countdown
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "white";
+  ctx.fillStyle = CONF.GAME.BASE_COLOR;
   ctx.font = '96px Vermin';
   ctx.fillText(countdown, canvas.width / 2, canvas.height / 2);
   countdown--;
@@ -113,7 +113,7 @@ restartButton.addEventListener('click', () => {
 
   // Immediately display the first number of the countdown
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "white";
+  ctx.fillStyle = CONF.GAME.BASE_COLOR;
   ctx.font = '96px Vermin';
   ctx.fillText(countdown, canvas.width / 2, canvas.height / 2);
   countdown--;
@@ -161,16 +161,38 @@ window.addEventListener('resize', () => {
   canvas.height = window.innerHeight;
   canvasCenterX = canvas.width / 2;
   canvasCenterY = canvas.height / 2;
-  player2.realign(canvas.width-20-100);
+  player2.realign(canvas.width-CONF.PADDLE.WIDTH-CONF.PADDLE.DIST_FROM_EDGE);
 });
 
 // Init game objects
-const ball = new Ball(canvas.width / 2, canvas.height / 2, 10, 17, CONF.BALL.ANGLE_RANGES);
-const player = new Paddle(100, canvas.height/2, 20, 100, 'white')
-const player2 = new Paddle(canvas.width-20-100, canvas.height/2, 20, 100, 'white')
-const net = new Net('white');
 const scorecounter = new scoreboard();
-const bouncecounter = new bouncemeter(21,150, 'white');
+const net = new Net(CONF.GAME.BASE_COLOR);
+const ball = new Ball(
+  canvas.width / 2, 
+  canvas.height / 2, 
+  CONF.BALL.RADIUS, 
+  CONF.BALL.SPEED, 
+  CONF.BALL.ANGLE_RANGES
+);
+const player = new Paddle(
+  CONF.PADDLE.DIST_FROM_EDGE,
+  canvas.height/2,
+  CONF.PADDLE.WIDTH,
+  CONF.PADDLE.BASE_HEIGHT,
+  CONF.GAME.BASE_COLOR
+)
+const player2 = new Paddle(
+  canvas.width-CONF.PADDLE.WIDTH-CONF.PADDLE.DIST_FROM_EDGE,
+  canvas.height/2,
+  CONF.PADDLE.WIDTH,
+  CONF.PADDLE.BASE_HEIGHT,
+  CONF.GAME.BASE_COLOR
+)
+const bouncecounter = new bouncemeter(
+  CONF.GAME.MATCH_LENGTH_IN_BOUNCES,
+  CONF.BOUNCEMETER.RADIUS,
+  CONF.GAME.BASE_COLOR
+);
 
 // Get controllers
 let gamepads = navigator.getGamepads(); // get array of connected gamepads
@@ -212,9 +234,9 @@ function update() {
     // read state of left analog stick
     stickY = gamepad.axes[1];
     // map stick value to paddle movement
-    if (stickY < -0.5) { // move left paddle up
+    if (stickY < -CONF.GAMEPAD.INPUT_THRESHOLD) { // move left paddle up
       player.moveUp(canvas);
-    } else if (stickY > 0.5) { // move left paddle down
+    } else if (stickY > CONF.GAMEPAD.INPUT_THRESHOLD) { // move left paddle down
       player.moveDown(canvas);
     }
   }
@@ -223,9 +245,9 @@ function update() {
     // read state of left analog stick
     p2stickY = gamepad2.axes[1];
     // map stick value to paddle movement
-    if (p2stickY < -0.5) { // move left paddle up
+    if (p2stickY < -CONF.GAMEPAD.INPUT_THRESHOLD) { // move left paddle up
       player2.moveUp(canvas);
-    } else if (p2stickY > 0.5) { // move left paddle down
+    } else if (p2stickY > CONF.GAMEPAD.INPUT_THRESHOLD) { // move left paddle down
       player2.moveDown(canvas);
     }
   }
@@ -273,7 +295,7 @@ function draw() {
   scorecounter.draw(ctx, canvas);
   bouncecounter.draw(ctx, canvasCenterX, canvasCenterY);
   if(gameOver) {
-    ctx.fillStyle = "white";
+    ctx.fillStyle = CONF.GAME.BASE_COLOR;
     ctx.font = "48px Vermin";
     ctx.textAlign = "center";
     let message;
@@ -287,7 +309,7 @@ function draw() {
     ctx.fillText(message, canvas.width / 2, canvas.height/2);
     restartButton.style.display = 'block'; // Show restart button
   } else if (paused && !gameOver) {
-    ctx.fillStyle = "white";
+    ctx.fillStyle = CONF.GAME.BASE_COLOR;
     ctx.font = "96px Vermin";
     ctx.textAlign = "center";
     ctx.fillText(texts.states.paused, canvas.width / 2, canvas.height/2);

@@ -5,6 +5,27 @@
 			[0.3, 0.6],
 			[3.45, 3.75],
 			[5.7, 6.0]
-		]
+		],
+		"RADIUS": 10,
+		"SPEED": 17
+	},
+	"PADDLE": {
+		"WIDTH": 20,
+		"DIST_FROM_EDGE": 100,
+		"BASE_HEIGHT": 100
+	},
+	"GAME": {
+		"BASE_COLOR": "white",
+		"COUNTDOWN": {
+			"NR_OF_STEPS": 3,
+			"STEP_DELAY_IN_MS": 300
+		},
+		"MATCH_LENGTH_IN_BOUNCES": 21
+	},
+	"BOUNCEMETER": {
+		"RADIUS": 150
+	},
+	"GAMEPAD": {
+		"INPUT_THRESHOLD": 0.5
 	}
 }
