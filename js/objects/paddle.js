@@ -1,5 +1,5 @@
 export default class Paddle {
-    constructor(x, y, width, height, color) {
+    constructor(x, y, width, height, color, ctx) {
       this.x = x;
       this.y = y;
       this.width = width;
@@ -8,6 +8,7 @@ export default class Paddle {
       this.speed = 7;
       this.rescaleStep = 10;
       this.minHeight = 40;
+      this.ctx = ctx
       this.originalHeight = height;
       this.originalX = x;
       this.originalY = y;
@@ -17,13 +18,13 @@ export default class Paddle {
       if(this.y - this.speed > 0) this.y -= this.speed;
     }
   
-    moveDown(canvas) {
-        if(this.y + this.height + this.speed < canvas.height) this.y += this.speed;
+    moveDown(canvasHeight) {
+        if(this.y + this.height + this.speed < canvasHeight) this.y += this.speed;
     }
   
-    draw(ctx) {
-      ctx.fillStyle = this.color;
-      ctx.fillRect(this.x, this.y, this.width, this.height);
+    draw() {
+      this.ctx.fillStyle = this.color;
+      this.ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 
     intersects(ball) {

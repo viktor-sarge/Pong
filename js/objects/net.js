@@ -1,14 +1,15 @@
 export default class Net {
-    constructor(color) {
+    constructor(color, ctx) {
         this.color = color;
+        this.ctx = ctx;
     }
-    draw(ctx, canvas) {
+    draw(canvasWidth, canvasHeight) {
         // Draw the net
-        ctx.setLineDash([5, 5]); // dotted
-        ctx.beginPath();
-        ctx.moveTo(canvas.width / 2, 0);
-        ctx.lineTo(canvas.width / 2, canvas.height);
-        ctx.strokeStyle = this.color;
-        ctx.stroke();
+        this.ctx.setLineDash([5, 5]); // dotted
+        this.ctx.beginPath();
+        this.ctx.moveTo(canvasWidth / 2, 0);
+        this.ctx.lineTo(canvasWidth / 2, canvasHeight);
+        this.ctx.strokeStyle = this.color;
+        this.ctx.stroke();
     }
 }

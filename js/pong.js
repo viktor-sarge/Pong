@@ -15,8 +15,10 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 // Get canvas center x,y
-let canvasCenterX = canvas.width / 2;
-let canvasCenterY = canvas.height / 2;
+let canvasWidth = canvas.width;
+let canvasHeight = canvas.height;
+let canvasCenterX = canvasWidth / 2;
+let canvasCenterY = canvasHeight / 2;
 
 // HTML element refs
 const startscreen = document.getElementById('startscreen');
@@ -159,34 +161,39 @@ document.addEventListener("keydown", function(event) {
 window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-  canvasCenterX = canvas.width / 2;
-  canvasCenterY = canvas.height / 2;
+  canvasWidth = canvas.width;
+  canvasHeight = canvas.height;
+  canvasCenterX = canvasWidth / 2;
+  canvasCenterY = canvasHeight / 2;
   player2.realign(canvas.width-CONF.PADDLE.WIDTH-CONF.PADDLE.DIST_FROM_EDGE);
 });
 
 // Init game objects
 const scorecounter = new scoreboard();
-const net = new Net(CONF.GAME.BASE_COLOR);
+const net = new Net(CONF.GAME.BASE_COLOR, ctx);
 const ball = new Ball(
   canvas.width / 2, 
   canvas.height / 2, 
   CONF.BALL.RADIUS, 
   CONF.BALL.SPEED, 
-  CONF.BALL.ANGLE_RANGES
+  CONF.BALL.ANGLE_RANGES,
+  ctx
 );
 const player = new Paddle(
   CONF.PADDLE.DIST_FROM_EDGE,
   canvas.height/2,
   CONF.PADDLE.WIDTH,
   CONF.PADDLE.BASE_HEIGHT,
-  CONF.GAME.BASE_COLOR
+  CONF.GAME.BASE_COLOR,
+  ctx
 )
 const player2 = new Paddle(
   canvas.width-CONF.PADDLE.WIDTH-CONF.PADDLE.DIST_FROM_EDGE,
   canvas.height/2,
   CONF.PADDLE.WIDTH,
   CONF.PADDLE.BASE_HEIGHT,
-  CONF.GAME.BASE_COLOR
+  CONF.GAME.BASE_COLOR,
+  ctx
 )
 const bouncecounter = new bouncemeter(
   CONF.GAME.MATCH_LENGTH_IN_BOUNCES,
@@ -212,18 +219,18 @@ function gameLoop() {
 function update() {
 
   // Check if the arrow up or arrow down key is pressed and call the corresponding method on the paddle
-  ball.update(canvas);
+  ball.update(canvasWidth, canvasHeight);
 
   // Movement by keyboard
   if (wPressed) {
       player.moveUp();
   } else if (sPressed) {
-      player.moveDown(canvas);
+      player.moveDown(canvasHeight);
   }
   if (multiplayer && arrowUpPressed) {
     player2.moveUp();
   } else if (multiplayer && arrowDownPressed) {
-    player2.moveDown(canvas);
+    player2.moveDown(canvasHeight);
   }
 
   // Movement by gamepads
@@ -235,9 +242,9 @@ function update() {
     stickY = gamepad.axes[1];
     // map stick value to paddle movement
     if (stickY < -CONF.GAMEPAD.INPUT_THRESHOLD) { // move left paddle up
-      player.moveUp(canvas);
+      player.moveUp();
     } else if (stickY > CONF.GAMEPAD.INPUT_THRESHOLD) { // move left paddle down
-      player.moveDown(canvas);
+      player.moveDown(canvasHeight);
     }
   }
 
@@ -246,9 +253,9 @@ function update() {
     p2stickY = gamepad2.axes[1];
     // map stick value to paddle movement
     if (p2stickY < -CONF.GAMEPAD.INPUT_THRESHOLD) { // move left paddle up
-      player2.moveUp(canvas);
+      player2.moveUp();
     } else if (p2stickY > CONF.GAMEPAD.INPUT_THRESHOLD) { // move left paddle down
-      player2.moveDown(canvas);
+      player2.moveDown(canvasHeight);
     }
   }
 
@@ -287,11 +294,11 @@ function update() {
 
 function draw() {
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);  // clear canvas
-  net.draw(ctx, canvas);
-  ball.draw(ctx, canvas);
-  player.draw(ctx);
-  if(multiplayer) player2.draw(ctx);
+  ctx.clearRect(0, 0, canvasWidth, canvasHeight);  // clear canvas
+  net.draw(canvasWidth, canvasHeight);
+  ball.draw(canvasWidth);
+  player.draw();
+  if(multiplayer) player2.draw();
   scorecounter.draw(ctx, canvas);
   bouncecounter.draw(ctx, canvasCenterX, canvasCenterY);
   if(gameOver) {
