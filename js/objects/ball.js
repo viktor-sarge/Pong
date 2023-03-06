@@ -1,12 +1,12 @@
 export default class Ball {
-    constructor(x, y, radius, speed, angle) {
+    constructor(x, y, radius, speed) {
       this.x = x;
       this.y = y;
       this.radius = radius;
       this.speed = speed;
-      this.angle = angle;
+      this.angle = this.getRandomAngle();
     }
-  
+
     update(canvas) {
       // Move the ball based on its speed and angle
       this.x += this.speed * Math.cos(this.angle);
@@ -34,7 +34,6 @@ export default class Ball {
     draw(ctx, canvas) {
 
       // Set the shadow color, offset, and blur
-      
       ctx.shadowColor = 'lightgray';
       ctx.shadowBlur = 25;
 
@@ -60,5 +59,16 @@ export default class Ball {
     serve(canvas) {
       this.x = canvas.width / 2;
       this.y = canvas.height / 2;
+      this.angle = this.getRandomAngle();
+    }
+
+    // Helper function to create random angles for the ball
+    getRandomAngle() {
+      const angleRanges = [
+        [2.55, 2.85], [0.3, 0.6],
+        [3.45, 3.75], [5.7, 6.0]]; // The ranges in radians
+      const randomRangeIndex = Math.floor(Math.random() * angleRanges.length);
+      const [minAngle, maxAngle] = angleRanges[randomRangeIndex];
+      return Math.random() * (maxAngle - minAngle) + minAngle;
     }
   }

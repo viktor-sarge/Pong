@@ -164,7 +164,7 @@ window.addEventListener('resize', () => {
 });
 
 // Init game objects
-const ball = new Ball(canvas.width / 2, canvas.height / 2, 10, 17, Math.PI / 14);
+const ball = new Ball(canvas.width / 2, canvas.height / 2, 10, 17);
 const player = new Paddle(100, canvas.height/2, 20, 100, 'white')
 const player2 = new Paddle(canvas.width-20-100, canvas.height/2, 20, 100, 'white')
 const net = new Net('white');
