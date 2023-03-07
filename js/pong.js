@@ -44,6 +44,18 @@ function resetGame() {
   ball.serve(canvas);
 }
 
+function declareWinner() {
+  let message;
+  if(scorecounter.winner() === 'p1') {
+    const randomIndex = Math.floor(Math.random() * TEXTS.WINNER.P1.length);
+    message = TEXTS.WINNER.P1[randomIndex];
+  } else {
+    const randomIndex = Math.floor(Math.random() * TEXTS.WINNER.P2.length);
+    message = TEXTS.WINNER.P2[randomIndex];
+  }
+  messageHandler.write(CONF.TEXT_SETTINGS.BIG, message);
+}
+
 // Helper function checking if ball moves right or left by radian angle
 function anglePointingRight(angle) {
   return Math.cos(angle) > 0; // Positive cosine means right
@@ -207,7 +219,6 @@ function update() {
 }
 
 function draw() {
-
   ctx.clearRect(0, 0, canvasWidth, canvasHeight);  // clear canvas
   net.draw(canvasWidth, canvasHeight);
   ball.draw(canvasWidth);
@@ -216,15 +227,7 @@ function draw() {
   scorecounter.draw(ctx, canvas);
   bouncecounter.draw(ctx, canvasCenterX, canvasCenterY);
   if(gameOver) {
-    let message;
-    if(scorecounter.winner() === 'p1') {
-      const randomIndex = Math.floor(Math.random() * TEXTS.WINNER.P1.length);
-      message = TEXTS.WINNER.P1[randomIndex];
-    } else {
-      const randomIndex = Math.floor(Math.random() * TEXTS.WINNER.P2.length);
-      message = TEXTS.WINNER.P2[randomIndex];
-    }
-    messageHandler.write(CONF.TEXT_SETTINGS.BIG, message);
+    declareWinner()
     restartButton.style.display = 'block'; // Show restart button
   } else if (paused && !gameOver) {
     messageHandler.write(CONF.TEXT_SETTINGS.BIG, TEXTS.STATES.PAUSED);
