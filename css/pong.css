@@ -28,13 +28,13 @@ body {
 }
 @keyframes glow {
 	0% {
-		font-size: 3vh;
+		color: black;
 	}
 	50% {
-		font-size: 3.3vh;
+		color: rgb(116, 32, 32);
 	}
 	100% {
-		font-size: 3vh;
+		color: black;
 	}
 }
 
@@ -76,14 +76,14 @@ body {
 	font-size: 4vh;
 	padding: 1vh;
 	font-family: 'Vermin';
-	animation: glow 4s ease-in-out infinite;
+	animation: glow 3s ease-in-out infinite;
 }
 #startbutton2player {
 	margin-top: 1ex;
 	font-size: 4vh;
 	padding: 1vh;
 	font-family: 'Vermin';
-	animation: glow 4s ease-in-out infinite;
+	animation: glow 3s ease-in-out infinite;
 }
 
 canvas {
