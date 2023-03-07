@@ -3,7 +3,7 @@ import Paddle from "./objects/paddle.js";
 import Net from "./objects/net.js";
 import scoreboard from "./objects/scoreboard.js";
 import bouncemeter from "./objects/bouncemeter.js";
-import texts from './data/strings.json' assert {type: 'json'};
+import TEXTS from './data/strings.json' assert {type: 'json'};
 import CONF from './config/config.json' assert {type: 'json'};
 
 // Canvas and contex refs
@@ -307,11 +307,11 @@ function draw() {
     ctx.textAlign = "center";
     let message;
     if(scorecounter.winner() === 'p1') {
-      const randomIndex = Math.floor(Math.random() * texts.winner.p1.length);
-      message = texts.winner.p1[randomIndex];
+      const randomIndex = Math.floor(Math.random() * TEXTS.WINNER.P1.length);
+      message = TEXTS.WINNER.P1[randomIndex];
     } else {
-      const randomIndex = Math.floor(Math.random() * texts.winner.p2.length);
-      message = texts.winner.p2[randomIndex];
+      const randomIndex = Math.floor(Math.random() * TEXTS.WINNER.P2.length);
+      message = texts.WINNER.P2[randomIndex];
     }
     ctx.fillText(message, canvas.width / 2, canvas.height/2);
     restartButton.style.display = 'block'; // Show restart button
@@ -319,7 +319,7 @@ function draw() {
     ctx.fillStyle = CONF.GAME.BASE_COLOR;
     ctx.font = "96px Vermin";
     ctx.textAlign = "center";
-    ctx.fillText(texts.states.paused, canvas.width / 2, canvas.height/2);
+    ctx.fillText(TEXTS.STATES.PAUSED, canvas.width / 2, canvas.height/2);
   }
 }
 

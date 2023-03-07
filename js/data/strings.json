@@ -1,23 +1,23 @@
 {
-	"feedback": {
-		"positive": "NICE WORK!",
-		"negative": "SORRY ABOUT THAT"
+	"FEEDBACK": {
+		"POSITIVE": "NICE WORK!",
+		"NEGATIVE": "SORRY ABOUT THAT"
 	},
-	"winner": {
-		"p1": [
+	"WINNER": {
+		"P1": [
 			"Player 1 wins!",
 			"Glory to p1",
 			"Player 1 strikes again",
 			"It's a good day to be P1"
 		],
-		"p2": [
+		"P2": [
 			"Player 2 wins!",
 			"It takes two to tango, but only P2 wins",
 			"Victory for P2",
 			"All your bases belong to P2"
 		]
 	},
-	"states": {
-		"paused": "paused"
+	"STATES": {
+		"PAUSED": "paused"
 	}
 }
