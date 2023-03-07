@@ -6,6 +6,7 @@ import bouncemeter from "./objects/bouncemeter.js";
 import TEXTS from './data/strings.json' assert {type: 'json'};
 import CONF from './config/config.json' assert {type: 'json'};
 import keyhandler from "./helpers/keyhandler.js";
+import countdownHandler from "./objects/countdown.js";
 
 // Canvas and contex refs
 const canvas = document.getElementById('myCanvas');
@@ -32,10 +33,6 @@ let multiplayer = false;
 let paused = true;
 let gameOver = true;
 
-// Game restart related variables
-let countdown = CONF.GAME.COUNTDOWN.NR_OF_STEPS;
-let timerIntervalId;
-
 function resetGame() {
   gameOver = false;
   paused = false;
@@ -45,63 +42,25 @@ function resetGame() {
   bouncecounter.reset();
   ball.serve(canvas);
 }
-function startCountdown() {
-  // Start countdown until game restart
-  timerIntervalId = setInterval(() => {
-    if (countdown > 0) {
-      // clear the canvas
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // write the countdown on the canvas
-      ctx.fillStyle = CONF.GAME.BASE_COLOR;
-      ctx.font = '96px Vermin';
-      ctx.fillText(countdown, canvas.width / 2, canvas.height / 2);
-
-      countdown--;
-    } else {
-      // clear the canvas
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      resetGame()
-
-      // stop the timer
-      clearInterval(timerIntervalId);
-      countdown = CONF.GAME.COUNTDOWN.NR_OF_STEPS;
-    }
-  }, CONF.GAME.COUNTDOWN.STEP_DELAY_IN_MS);
-}
 
 // Helper function checking if ball moves right or left by radian angle
 function anglePointingRight(angle) {
   return Math.cos(angle) > 0; // Positive cosine means right
 }
 
+const countdown = new countdownHandler(CONF, ctx, canvas, resetGame);
+
 // Single player gamestart event listener
 startbutton.addEventListener('click', ()=>{
   startscreen.classList.toggle('hidden');
-
-  // Immediately display the first number of the countdown
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = CONF.GAME.BASE_COLOR;
-  ctx.font = '96px Vermin';
-  ctx.fillText(countdown, canvas.width / 2, canvas.height / 2);
-  countdown--;
-
-  startCountdown();
+  countdown.start();
 });
 
 // Multiplayer game start event listener
 startbutton2player.addEventListener('click', ()=>{
   startscreen.classList.toggle('hidden');
   multiplayer = true;
-
-  // Immediately display the first number of the countdown
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = CONF.GAME.BASE_COLOR;
-  ctx.font = '96px Vermin';
-  ctx.fillText(countdown, canvas.width / 2, canvas.height / 2);
-  countdown--;
-
-  startCountdown();
+  countdown.start();
 })
 
 // Restart event listener
@@ -179,7 +138,6 @@ function gameLoop() {
 
 function update() {
 
-  // Check if the arrow up or arrow down key is pressed and call the corresponding method on the paddle
   ball.update(canvasWidth, canvasHeight);
 
   // Movement by keyboard
