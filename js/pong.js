@@ -5,22 +5,23 @@ import scoreboard from "./objects/scoreboard.js";
 import bouncemeter from "./objects/bouncemeter.js";
 import TEXTS from './data/strings.json' assert {type: 'json'};
 import CONF from './config/config.json' assert {type: 'json'};
+import keyhandler from "./helpers/keyhandler.js";
 
 // Canvas and contex refs
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
 
-// Set canvas dimensions to full screen
+// Make fullscreen
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-// Get canvas center x,y
+// Canvas variables
 let canvasWidth = canvas.width;
 let canvasHeight = canvas.height;
 let canvasCenterX = canvasWidth / 2;
 let canvasCenterY = canvasHeight / 2;
 
-// HTML element refs
+// HTML element refs for the interface
 const startscreen = document.getElementById('startscreen');
 const startbutton = document.getElementById('startbutton');
 const startbutton2player = document.getElementById('startbutton2player');
@@ -30,12 +31,6 @@ const restartButton = document.getElementById('restartButton');
 let multiplayer = false;
 let paused = true;
 let gameOver = true;
-
-// Keyhandler variables
-let arrowUpPressed = false;
-let arrowDownPressed = false;
-let wPressed = false;
-let sPressed = false;
 
 // Game restart related variables
 let countdown = CONF.GAME.COUNTDOWN.NR_OF_STEPS;
@@ -122,41 +117,6 @@ restartButton.addEventListener('click', () => {
   startCountdown();
 })
 
-// Keyboard controls event listers
-document.addEventListener("keydown", function(event) {
-    switch(event.code) {
-      case 'ArrowUp':
-        arrowUpPressed = true;
-        break;
-      case 'ArrowDown':
-        arrowDownPressed = true;
-        break;
-      case 'KeyW':
-        wPressed = true;
-        break;
-      case 'KeyS':
-        sPressed = true;
-        break;
-    }
-  });
-
-  document.addEventListener("keyup", function(event) {
-    switch(event.code) {
-      case 'ArrowUp':
-        arrowUpPressed = false;
-        break;
-      case 'ArrowDown':
-        arrowDownPressed = false;
-        break;
-      case 'KeyW':
-        wPressed = false;
-        break;
-      case 'KeyS':
-        sPressed = false;
-        break;
-    }
-  });
-
 // Update canvas on window resize event listener
 window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
@@ -200,6 +160,7 @@ const bouncecounter = new bouncemeter(
   CONF.BOUNCEMETER.RADIUS,
   CONF.GAME.BASE_COLOR
 );
+const keyBindings = new keyhandler();
 
 // Get controllers
 let gamepads = navigator.getGamepads(); // get array of connected gamepads
@@ -222,14 +183,14 @@ function update() {
   ball.update(canvasWidth, canvasHeight);
 
   // Movement by keyboard
-  if (wPressed) {
+  if (keyBindings.wPressed) {
       player.moveUp();
-  } else if (sPressed) {
+  } else if (keyBindings.sPressed) {
       player.moveDown(canvasHeight);
   }
-  if (multiplayer && arrowUpPressed) {
+  if (multiplayer && keyBindings.arrowUpPressed) {
     player2.moveUp();
-  } else if (multiplayer && arrowDownPressed) {
+  } else if (multiplayer && keyBindings.arrowDownPressed) {
     player2.moveDown(canvasHeight);
   }
 
