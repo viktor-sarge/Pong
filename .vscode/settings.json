@@ -10,6 +10,9 @@
 		"mechanics",
 		"rescale",
 		"text",
-		"config"
+		"config",
+		"gameloop",
+		"countdown",
+		"messages"
 	]
 }

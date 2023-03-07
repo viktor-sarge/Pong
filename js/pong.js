@@ -7,6 +7,7 @@ import TEXTS from './data/strings.json' assert {type: 'json'};
 import CONF from './config/config.json' assert {type: 'json'};
 import keyhandler from "./helpers/keyhandler.js";
 import countdownHandler from "./objects/countdown.js";
+import messages from "./objects/messages.js";
 
 // Canvas and contex refs
 const canvas = document.getElementById('myCanvas');
@@ -66,14 +67,7 @@ startbutton2player.addEventListener('click', ()=>{
 // Restart event listener
 restartButton.addEventListener('click', () => {
   restartButton.style.display = 'none';
-
-  // Immediately display the first number of the countdown
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = CONF.GAME.BASE_COLOR;
-  ctx.font = '96px Vermin';
-  ctx.fillText(countdown, canvas.width / 2, canvas.height / 2);
-  countdown--;
-  startCountdown();
+  countdown.start();
 })
 
 // Update canvas on window resize event listener
@@ -120,6 +114,7 @@ const bouncecounter = new bouncemeter(
   CONF.GAME.BASE_COLOR
 );
 const keyBindings = new keyhandler();
+const messageHandler = new messages(ctx, canvas);
 
 // Get controllers
 let gamepads = navigator.getGamepads(); // get array of connected gamepads
@@ -221,9 +216,6 @@ function draw() {
   scorecounter.draw(ctx, canvas);
   bouncecounter.draw(ctx, canvasCenterX, canvasCenterY);
   if(gameOver) {
-    ctx.fillStyle = CONF.GAME.BASE_COLOR;
-    ctx.font = "48px Vermin";
-    ctx.textAlign = "center";
     let message;
     if(scorecounter.winner() === 'p1') {
       const randomIndex = Math.floor(Math.random() * TEXTS.WINNER.P1.length);
@@ -232,13 +224,10 @@ function draw() {
       const randomIndex = Math.floor(Math.random() * TEXTS.WINNER.P2.length);
       message = texts.WINNER.P2[randomIndex];
     }
-    ctx.fillText(message, canvas.width / 2, canvas.height/2);
+    messageHandler.write(CONF.TEXT_SETTINGS.BIG, message);
     restartButton.style.display = 'block'; // Show restart button
   } else if (paused && !gameOver) {
-    ctx.fillStyle = CONF.GAME.BASE_COLOR;
-    ctx.font = "96px Vermin";
-    ctx.textAlign = "center";
-    ctx.fillText(TEXTS.STATES.PAUSED, canvas.width / 2, canvas.height/2);
+    messageHandler.write(CONF.TEXT_SETTINGS.BIG, TEXTS.STATES.PAUSED);
   }
 }
 

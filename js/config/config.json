@@ -20,12 +20,19 @@
 			"NR_OF_STEPS": 3,
 			"STEP_DELAY_IN_MS": 300
 		},
-		"MATCH_LENGTH_IN_BOUNCES": 21
+		"MATCH_LENGTH_IN_BOUNCES": 1
 	},
 	"BOUNCEMETER": {
 		"RADIUS": 150
 	},
 	"GAMEPAD": {
 		"INPUT_THRESHOLD": 0.5
+	},
+	"TEXT_SETTINGS": {
+		"BIG": {
+			"COLOR": "white",
+			"FONT": "96px Vermin",
+			"ALIGN": "center"
+		}
 	}
 }
