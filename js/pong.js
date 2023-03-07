@@ -8,6 +8,7 @@ import CONF from './config/config.json' assert {type: 'json'};
 import keyhandler from "./helpers/keyhandler.js";
 import countdownHandler from "./objects/countdown.js";
 import messages from "./objects/messages.js";
+import gui from "./helpers/gui.js";   
 
 // Canvas and contex refs
 const canvas = document.getElementById('myCanvas');
@@ -23,14 +24,11 @@ let canvasHeight = canvas.height;
 let canvasCenterX = canvasWidth / 2;
 let canvasCenterY = canvasHeight / 2;
 
-// HTML element refs for the interface
-const startscreen = document.getElementById('startscreen');
-const startbutton = document.getElementById('startbutton');
-const startbutton2player = document.getElementById('startbutton2player');
-const restartButton = document.getElementById('restartButton');
-
 // Game state variables
-let multiplayer = false;
+let gamestate = {
+  multiplayer: false
+}
+
 let paused = true;
 let gameOver = true;
 
@@ -62,25 +60,7 @@ function anglePointingRight(angle) {
 }
 
 const countdown = new countdownHandler(CONF, ctx, canvas, resetGame);
-
-// Single player gamestart event listener
-startbutton.addEventListener('click', ()=>{
-  startscreen.classList.toggle('hidden');
-  countdown.start();
-});
-
-// Multiplayer game start event listener
-startbutton2player.addEventListener('click', ()=>{
-  startscreen.classList.toggle('hidden');
-  multiplayer = true;
-  countdown.start();
-})
-
-// Restart event listener
-restartButton.addEventListener('click', () => {
-  restartButton.style.display = 'none';
-  countdown.start();
-})
+const interfaceHandler = new gui(countdown, gamestate);
 
 // Update canvas on window resize event listener
 window.addEventListener('resize', () => {
@@ -153,9 +133,9 @@ function update() {
   } else if (keyBindings.sPressed) {
       player.moveDown(canvasHeight);
   }
-  if (multiplayer && keyBindings.arrowUpPressed) {
+  if (gamestate.multiplayer && keyBindings.arrowUpPressed) {
     player2.moveUp();
-  } else if (multiplayer && keyBindings.arrowDownPressed) {
+  } else if (gamestate.multiplayer && keyBindings.arrowDownPressed) {
     player2.moveDown(canvasHeight);
   }
 
@@ -202,7 +182,7 @@ function update() {
   }
 
   // Collision checking p2 / ball
-  if(multiplayer && player2.intersects(ball)) {
+  if(gamestate.multiplayer && player2.intersects(ball)) {
     anglePointingRight(ball.angle) 
         ? ball.x = player2.x - ball.radius 
         : ball.x = player2.x + player2.width + ball.radius;
@@ -223,12 +203,12 @@ function draw() {
   net.draw(canvasWidth, canvasHeight);
   ball.draw(canvasWidth);
   player.draw();
-  if(multiplayer) player2.draw();
+  if(gamestate.multiplayer) player2.draw();
   scorecounter.draw(ctx, canvas);
   bouncecounter.draw(ctx, canvasCenterX, canvasCenterY);
   if(gameOver) {
     declareWinner()
-    restartButton.style.display = 'block'; // Show restart button
+    interfaceHandler.showRestart();
   } else if (paused && !gameOver) {
     messageHandler.write(CONF.TEXT_SETTINGS.BIG, TEXTS.STATES.PAUSED);
   }
