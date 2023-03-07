@@ -178,7 +178,7 @@ function update() {
     anglePointingRight(ball.angle) 
         ? ball.x = player.x - ball.radius 
         : ball.x = player.x + player.width + ball.radius;
-    ball.angle = Math.PI - ball.angle;
+    ball.switchDirection();
     scorecounter.score('p1');
     player.shrink();
     player2.grow();
@@ -194,7 +194,7 @@ function update() {
     anglePointingRight(ball.angle) 
         ? ball.x = player2.x - ball.radius 
         : ball.x = player2.x + player2.width + ball.radius;
-    ball.angle = Math.PI - ball.angle;
+    ball.switchDirection();
     scorecounter.score('p2');
     player2.shrink();
     player.grow();
@@ -222,7 +222,7 @@ function draw() {
       message = TEXTS.WINNER.P1[randomIndex];
     } else {
       const randomIndex = Math.floor(Math.random() * TEXTS.WINNER.P2.length);
-      message = texts.WINNER.P2[randomIndex];
+      message = TEXTS.WINNER.P2[randomIndex];
     }
     messageHandler.write(CONF.TEXT_SETTINGS.BIG, message);
     restartButton.style.display = 'block'; // Show restart button

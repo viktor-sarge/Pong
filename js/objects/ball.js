@@ -72,4 +72,8 @@ export default class Ball {
       // Calcuate an angle within the chosen range
       return Math.random() * (maxAngle - minAngle) + minAngle;
     }
+
+    switchDirection() {
+      this.angle = Math.PI - this.angle;
+    }
   }
