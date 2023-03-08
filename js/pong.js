@@ -25,6 +25,10 @@ function anglePointingRight(angle) {
   return Math.cos(angle) > 0; // Positive cosine means right
 }
 
+const soundBounce = new Howl({
+  src: ['../score.mp3']
+});
+
 // Get controllers
 let gamepads = navigator.getGamepads(); // get array of connected gamepads
 let gamepad = gamepads[0];
@@ -92,6 +96,7 @@ function update() {
     player.shrink();
     player2.grow();
     bouncecounter.decrease();
+    soundBounce.play();
     if(bouncecounter.remaining() === 0) {
       gamestate.paused = true;
       gamestate.gameOver = true;
@@ -108,6 +113,7 @@ function update() {
     player2.shrink();
     player.grow();
     bouncecounter.decrease();
+    soundBounce.play();
     if(bouncecounter.remaining()  === 0) {
       gamestate.paused = true;
       gamestate.gameOver = true;

@@ -7,6 +7,9 @@ export default class Ball {
       this.angleRanges = angleRanges;
       this.angle = this.getRandomAngle();
       this.ctx = ctx;
+      this.soundBounce = new Howl({
+        src: ['../../523088__magnuswaker__energy-bounce-1.wav']
+      });
     }
 
     update(canvasWidth, canvasHeight) {
@@ -18,18 +21,42 @@ export default class Ball {
       if (this.x - this.radius < 0) {
         this.x = this.radius;
         this.angle = Math.PI - this.angle;
+        if(!this.soundBounce.playing()) {
+          this.soundBounce.stop(); 
+          this.soundBounce.play()
+        } else {
+          this.soundBounce.play();
+        }
       }
       if (this.x + this.radius > canvasWidth) {
         this.x = canvasWidth - this.radius;
         this.angle = Math.PI - this.angle;
+        if(!this.soundBounce.playing()) {
+          this.soundBounce.stop(); 
+          this.soundBounce.play()
+        } else {
+          this.soundBounce.play();
+        }
       }
       if (this.y - this.radius < 0) {
         this.y = this.radius;
         this.angle = -this.angle;
+        if(!this.soundBounce.playing()) {
+          this.soundBounce.stop(); 
+          this.soundBounce.play()
+        } else {
+          this.soundBounce.play();
+        }
       }
       if (this.y + this.radius > canvasHeight) {
         this.y = canvasHeight - this.radius;
         this.angle = -this.angle;
+        if(!this.soundBounce.playing()) {
+          this.soundBounce.stop(); 
+          this.soundBounce.play()
+        } else {
+          this.soundBounce.play();
+        }
       }
     }
   

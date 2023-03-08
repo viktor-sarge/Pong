@@ -5,6 +5,12 @@ export default class countdownHanler {
         this.canvas = canvas;
         this.resetGame = resetGame;
         this.countdown = CONF.GAME.COUNTDOWN.NR_OF_STEPS
+        this.beep = new Howl({
+            src: ['../../555061__magnuswaker__repeatable-beep.wav']
+        });
+        this.startsound = new Howl({
+            src: ['../../641042__magnuswaker__racing-buzzer.wav']
+        });
     }
     start() {
         // Immediately display the first number of the countdown
@@ -13,6 +19,7 @@ export default class countdownHanler {
         this.ctx.font = '96px Vermin';
         this.ctx.fillText(this.countdown, this.canvas.width / 2, this.canvas.height / 2);
         this.countdown--;
+        this.beep.play();
 
         // Start countdown
         let timerIntervalId = setInterval(() => {
@@ -26,6 +33,7 @@ export default class countdownHanler {
             this.ctx.fillText(this.countdown, this.canvas.width / 2, this.canvas.height / 2);
     
             this.countdown--;
+            this.beep.play();
             } else {
             // clear the canvas
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -33,6 +41,7 @@ export default class countdownHanler {
     
             // stop the timer
             clearInterval(timerIntervalId);
+            this.startsound.play();
             this.countdown = this.CONF.GAME.COUNTDOWN.NR_OF_STEPS;
             }
         }, this.CONF.GAME.COUNTDOWN.STEP_DELAY_IN_MS);
