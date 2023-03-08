@@ -13,6 +13,7 @@
 		"config",
 		"gameloop",
 		"countdown",
-		"messages"
+		"messages",
+		"gui"
 	]
 }

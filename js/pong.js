@@ -1,112 +1,29 @@
-import Ball from "./objects/ball.js";
-import Paddle from "./objects/paddle.js";
-import Net from "./objects/net.js";
-import scoreboard from "./objects/scoreboard.js";
-import bouncemeter from "./objects/bouncemeter.js";
 import TEXTS from './data/strings.json' assert {type: 'json'};
 import CONF from './config/config.json' assert {type: 'json'};
-import keyhandler from "./helpers/keyhandler.js";
-import countdownHandler from "./objects/countdown.js";
-import messages from "./objects/messages.js";
-import gui from "./helpers/gui.js";   
 
-// Canvas and contex refs
-const canvas = document.getElementById('myCanvas');
-const ctx = canvas.getContext('2d');
-
-// Make fullscreen
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-// Canvas variables
-let canvasWidth = canvas.width;
-let canvasHeight = canvas.height;
-let canvasCenterX = canvasWidth / 2;
-let canvasCenterY = canvasHeight / 2;
-
-// Game state variables
-let gamestate = {
-  multiplayer: false
-}
-
-let paused = true;
-let gameOver = true;
-
-function resetGame() {
-  gameOver = false;
-  paused = false;
-  player.reset();
-  player2.reset();
-  scorecounter.reset();
-  bouncecounter.reset();
-  ball.serve(canvas);
-}
-
-function declareWinner() {
-  let message;
-  if(scorecounter.winner() === 'p1') {
-    const randomIndex = Math.floor(Math.random() * TEXTS.WINNER.P1.length);
-    message = TEXTS.WINNER.P1[randomIndex];
-  } else {
-    const randomIndex = Math.floor(Math.random() * TEXTS.WINNER.P2.length);
-    message = TEXTS.WINNER.P2[randomIndex];
-  }
-  messageHandler.write(CONF.TEXT_SETTINGS.BIG, message);
-}
+import {
+  ctx,
+  canvas, 
+  scorecounter, 
+  bouncecounter, 
+  net, 
+  ball, 
+  player, 
+  player2,
+  keyBindings,
+  messageHandler, 
+  canvasCenterX,
+  canvasCenterY, 
+  canvasHeight,
+  canvasWidth,
+  gamestate, 
+  declareWinner,
+  interfaceHandler } from "./setup.js";
 
 // Helper function checking if ball moves right or left by radian angle
 function anglePointingRight(angle) {
   return Math.cos(angle) > 0; // Positive cosine means right
 }
-
-const countdown = new countdownHandler(CONF, ctx, canvas, resetGame);
-const interfaceHandler = new gui(countdown, gamestate);
-
-// Update canvas on window resize event listener
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  canvasWidth = canvas.width;
-  canvasHeight = canvas.height;
-  canvasCenterX = canvasWidth / 2;
-  canvasCenterY = canvasHeight / 2;
-  player2.realign(canvas.width-CONF.PADDLE.WIDTH-CONF.PADDLE.DIST_FROM_EDGE);
-});
-
-// Init game objects
-const scorecounter = new scoreboard();
-const net = new Net(CONF.GAME.BASE_COLOR, ctx);
-const ball = new Ball(
-  canvas.width / 2, 
-  canvas.height / 2, 
-  CONF.BALL.RADIUS, 
-  CONF.BALL.SPEED, 
-  CONF.BALL.ANGLE_RANGES,
-  ctx
-);
-const player = new Paddle(
-  CONF.PADDLE.DIST_FROM_EDGE,
-  canvas.height/2,
-  CONF.PADDLE.WIDTH,
-  CONF.PADDLE.BASE_HEIGHT,
-  CONF.GAME.BASE_COLOR,
-  ctx
-)
-const player2 = new Paddle(
-  canvas.width-CONF.PADDLE.WIDTH-CONF.PADDLE.DIST_FROM_EDGE,
-  canvas.height/2,
-  CONF.PADDLE.WIDTH,
-  CONF.PADDLE.BASE_HEIGHT,
-  CONF.GAME.BASE_COLOR,
-  ctx
-)
-const bouncecounter = new bouncemeter(
-  CONF.GAME.MATCH_LENGTH_IN_BOUNCES,
-  CONF.BOUNCEMETER.RADIUS,
-  CONF.GAME.BASE_COLOR
-);
-const keyBindings = new keyhandler();
-const messageHandler = new messages(ctx, canvas);
 
 // Get controllers
 let gamepads = navigator.getGamepads(); // get array of connected gamepads
@@ -117,7 +34,7 @@ let stickY, p2stickY;
 function gameLoop() {
   requestAnimationFrame(gameLoop);
 
-  if(!paused && !gameOver){
+  if(!gamestate.paused && !gamestate.gameOver){
     update();
     draw();
   }
@@ -176,8 +93,8 @@ function update() {
     player2.grow();
     bouncecounter.decrease();
     if(bouncecounter.remaining() === 0) {
-      paused = true;
-      gameOver = true;
+      gamestate.paused = true;
+      gamestate.gameOver = true;
     }
   }
 
@@ -192,8 +109,8 @@ function update() {
     player.grow();
     bouncecounter.decrease();
     if(bouncecounter.remaining()  === 0) {
-      paused = true;
-      gameOver = true;
+      gamestate.paused = true;
+      gamestate.gameOver = true;
     }
   }
 }
@@ -206,10 +123,10 @@ function draw() {
   if(gamestate.multiplayer) player2.draw();
   scorecounter.draw(ctx, canvas);
   bouncecounter.draw(ctx, canvasCenterX, canvasCenterY);
-  if(gameOver) {
+  if(gamestate.gameOver) {
     declareWinner()
     interfaceHandler.showRestart();
-  } else if (paused && !gameOver) {
+  } else if (gamestate.paused && !gamestate.gameOver) {
     messageHandler.write(CONF.TEXT_SETTINGS.BIG, TEXTS.STATES.PAUSED);
   }
 }
