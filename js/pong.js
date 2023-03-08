@@ -44,6 +44,25 @@ function gameLoop() {
   }
 }
 
+function checkCollisions(player, opponent, ball) {
+  // Collision checking p1 / ball
+  if(player.intersects(ball)) {
+    anglePointingRight(ball.angle) 
+        ? ball.x = player.x - ball.radius 
+        : ball.x = player.x + player.width + ball.radius;
+    ball.switchDirection();
+    scorecounter.score('p1');
+    player.shrink();
+    opponent.grow();
+    bouncecounter.decrease();
+    soundBounce.play();
+    if(bouncecounter.remaining() === 0) {
+      gamestate.paused = true;
+      gamestate.gameOver = true;
+    }
+  }
+}
+
 function update() {
 
   ball.update(canvasWidth, canvasHeight);
@@ -86,39 +105,8 @@ function update() {
     }
   }
 
-  // Collision checking p1 / ball
-  if(player.intersects(ball)) {
-    anglePointingRight(ball.angle) 
-        ? ball.x = player.x - ball.radius 
-        : ball.x = player.x + player.width + ball.radius;
-    ball.switchDirection();
-    scorecounter.score('p1');
-    player.shrink();
-    player2.grow();
-    bouncecounter.decrease();
-    soundBounce.play();
-    if(bouncecounter.remaining() === 0) {
-      gamestate.paused = true;
-      gamestate.gameOver = true;
-    }
-  }
-
-  // Collision checking p2 / ball
-  if(gamestate.multiplayer && player2.intersects(ball)) {
-    anglePointingRight(ball.angle) 
-        ? ball.x = player2.x - ball.radius 
-        : ball.x = player2.x + player2.width + ball.radius;
-    ball.switchDirection();
-    scorecounter.score('p2');
-    player2.shrink();
-    player.grow();
-    bouncecounter.decrease();
-    soundBounce.play();
-    if(bouncecounter.remaining()  === 0) {
-      gamestate.paused = true;
-      gamestate.gameOver = true;
-    }
-  }
+  checkCollisions(player, player2, ball);
+  checkCollisions(player2, player, ball);
 }
 
 function draw() {
