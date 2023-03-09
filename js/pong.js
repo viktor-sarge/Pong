@@ -10,7 +10,7 @@ import {
   ball, 
   player, 
   player2,
-  keyBindings,
+  inputs,
   messageHandler, 
   canvasCenterX,
   canvasCenterY, 
@@ -37,8 +37,15 @@ let stickY, p2stickY;
 
 function gameLoop() {
   requestAnimationFrame(gameLoop);
-
-  if(!gamestate.paused && !gamestate.gameOver){
+  if(gamestate.gameOver) {
+    if(gamestate.running) {
+      declareWinner()
+      interfaceHandler.showRestart();
+    }
+  } else if(gamestate.paused){
+    draw();
+    messageHandler.write(CONF.TEXT_SETTINGS.BIG, TEXTS.STATES.PAUSED);
+  } else if(gamestate.running){
     update();
     draw();
   }
@@ -68,14 +75,14 @@ function update() {
   ball.update(canvasWidth, canvasHeight);
 
   // Movement by keyboard
-  if (keyBindings.wPressed) {
+  if (inputs.wPressed) {
       player.moveUp();
-  } else if (keyBindings.sPressed) {
+  } else if (inputs.sPressed) {
       player.moveDown(canvasHeight);
   }
-  if (gamestate.multiplayer && keyBindings.arrowUpPressed) {
+  if (gamestate.multiplayer && inputs.arrowUpPressed) {
     player2.moveUp();
-  } else if (gamestate.multiplayer && keyBindings.arrowDownPressed) {
+  } else if (gamestate.multiplayer && inputs.arrowDownPressed) {
     player2.moveDown(canvasHeight);
   }
 
@@ -117,12 +124,6 @@ function draw() {
   if(gamestate.multiplayer) player2.draw();
   scorecounter.draw(ctx, canvas);
   bouncecounter.draw(ctx, canvasCenterX, canvasCenterY);
-  if(gamestate.gameOver) {
-    declareWinner()
-    interfaceHandler.showRestart();
-  } else if (gamestate.paused && !gamestate.gameOver) {
-    messageHandler.write(CONF.TEXT_SETTINGS.BIG, TEXTS.STATES.PAUSED);
-  }
 }
 
 // Start the game loop

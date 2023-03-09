@@ -1,10 +1,11 @@
-export default class keyhandler {
-    constructor() {
+export default class InputHandler {
+    constructor(gameState) {
         // Keyhandler variables
         this.arrowUpPressed = false;
         this.arrowDownPressed = false;
         this.wPressed = false;
         this.sPressed = false;
+        this.gameState = gameState;
 
         // Keyboard controls event listers
         document.addEventListener("keydown", event => {
@@ -21,6 +22,9 @@ export default class keyhandler {
             case 'KeyS':
                 this.sPressed = true;
                 break;
+            case 'KeyP':
+                this.gameState.paused = !this.gameState.paused;
+                break
             }
         });
 

@@ -5,7 +5,7 @@ import Ball from "./objects/ball.js";
 import Paddle from "./objects/paddle.js";
 import CONF from './config/config.json' assert {type: 'json'};
 import Net from "./objects/net.js";
-import keyhandler from "./helpers/keyhandler.js";
+import InputHandler from "./helpers/inputHandler.js";
 import messages from "./objects/messages.js";
 import countdownHandler from "./objects/countdown.js";
 import gui from "./helpers/gui.js"; 
@@ -13,8 +13,9 @@ import gui from "./helpers/gui.js";
 // Game state variables
 let gamestate = {
   multiplayer: false,
-  paused: true,
-  gameOver: true
+  paused: false,
+  gameOver: false,
+  running: false
 }
 
 // Canvas and contex refs
@@ -80,7 +81,7 @@ CONF.PLAYERS[1].IDENTIFIER
 );
 
 const net = new Net(CONF.GAME.BASE_COLOR, ctx);
-const keyBindings = new keyhandler();
+const inputs = new InputHandler(gamestate);
 const messageHandler = new messages(ctx, canvas);
 const countdown = new countdownHandler(CONF, ctx, canvas, resetGame);
 const interfaceHandler = new gui(countdown, gamestate);
@@ -88,6 +89,7 @@ const interfaceHandler = new gui(countdown, gamestate);
 function resetGame() {
   gamestate.gameOver = false;
   gamestate.paused = false;
+  gamestate.running = true;
   player.reset();
   player2.reset();
   scorecounter.reset();
@@ -105,6 +107,7 @@ function declareWinner() {
     message = TEXTS.WINNER.P2[randomIndex];
   }
   messageHandler.write(CONF.TEXT_SETTINGS.BIG, message);
+  gamestate.running = false;
 }
 
-export {canvas, ctx, scorecounter, bouncecounter, net, ball, player, player2, keyBindings,messageHandler, canvasWidth, canvasHeight, canvasCenterX, canvasCenterY, gamestate, resetGame, declareWinner, countdown, interfaceHandler};
+export {canvas, ctx, scorecounter, bouncecounter, net, ball, player, player2, inputs,messageHandler, canvasWidth, canvasHeight, canvasCenterX, canvasCenterY, gamestate, resetGame, declareWinner, countdown, interfaceHandler};
