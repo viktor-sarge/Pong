@@ -65,7 +65,8 @@ canvas.height/2,
 CONF.PADDLE.WIDTH,
 CONF.PADDLE.BASE_HEIGHT,
 CONF.GAME.BASE_COLOR,
-ctx
+ctx,
+CONF.PLAYERS[0].IDENTIFIER
 );
 
 const player2 = new Paddle(
@@ -74,7 +75,8 @@ canvas.height/2,
 CONF.PADDLE.WIDTH,
 CONF.PADDLE.BASE_HEIGHT,
 CONF.GAME.BASE_COLOR,
-ctx
+ctx,
+CONF.PLAYERS[1].IDENTIFIER
 );
 
 const net = new Net(CONF.GAME.BASE_COLOR, ctx);

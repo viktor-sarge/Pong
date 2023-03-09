@@ -45,13 +45,13 @@ function gameLoop() {
 }
 
 function checkCollisions(player, opponent, ball) {
-  // Collision checking p1 / ball
+  // Collision checking player / ball
   if(player.intersects(ball)) {
     anglePointingRight(ball.angle) 
         ? ball.x = player.x - ball.radius 
         : ball.x = player.x + player.width + ball.radius;
     ball.switchDirection();
-    scorecounter.score('p1');
+    scorecounter.score(player.id);
     player.shrink();
     opponent.grow();
     bouncecounter.decrease();

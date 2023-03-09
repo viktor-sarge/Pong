@@ -1,5 +1,5 @@
 export default class Paddle {
-    constructor(x, y, width, height, color, ctx) {
+    constructor(x, y, width, height, color, ctx, id) {
       this.x = x;
       this.y = y;
       this.width = width;
@@ -12,6 +12,7 @@ export default class Paddle {
       this.originalHeight = height;
       this.originalX = x;
       this.originalY = y;
+      this.id = id;
     }
   
     moveUp() {

@@ -14,6 +14,7 @@
 		"gameloop",
 		"countdown",
 		"messages",
-		"gui"
+		"gui",
+		"audio"
 	]
 }
