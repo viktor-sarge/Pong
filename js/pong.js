@@ -106,7 +106,7 @@ function update() {
   }
 
   checkCollisions(player, player2, ball);
-  checkCollisions(player2, player, ball);
+  if(gamestate.multiplayer) checkCollisions(player2, player, ball);
 }
 
 function draw() {
