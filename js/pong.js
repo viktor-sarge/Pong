@@ -29,11 +29,7 @@ const soundBounce = new Howl({
   src: ['../score.mp3']
 });
 
-// Get controllers
-let gamepads = navigator.getGamepads(); // get array of connected gamepads
-let gamepad = gamepads[0];
-let gamepad2 = gamepads[1];
-let stickY, p2stickY;
+
 
 function gameLoop() {
   requestAnimationFrame(gameLoop);
@@ -74,32 +70,6 @@ function update() {
 
   ball.update(canvasWidth, canvasHeight);
   inputs.update()
-
-  // Movement by gamepads
-  gamepads = navigator.getGamepads();
-  gamepad = gamepads[0];
-  gamepad2 = gamepads[1];
-  if (gamepad) { // check if gamepad exists
-    // read state of left analog stick
-    stickY = gamepad.axes[1];
-    // map stick value to paddle movement
-    if (stickY < -CONF.GAMEPAD.INPUT_THRESHOLD) { // move left paddle up
-      player.moveUp();
-    } else if (stickY > CONF.GAMEPAD.INPUT_THRESHOLD) { // move left paddle down
-      player.moveDown(canvasHeight);
-    }
-  }
-
-  if (gamepad2) { // check if gamepad exists
-    // read state of left analog stick
-    p2stickY = gamepad2.axes[1];
-    // map stick value to paddle movement
-    if (p2stickY < -CONF.GAMEPAD.INPUT_THRESHOLD) { // move left paddle up
-      player2.moveUp();
-    } else if (p2stickY > CONF.GAMEPAD.INPUT_THRESHOLD) { // move left paddle down
-      player2.moveDown(canvasHeight);
-    }
-  }
 
   checkCollisions(player, player2, ball);
   if(gamestate.multiplayer) checkCollisions(player2, player, ball);

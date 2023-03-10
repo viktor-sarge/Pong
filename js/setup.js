@@ -84,11 +84,25 @@ canvas
 
 const net = new Net(CONF.GAME.BASE_COLOR, ctx);
 const inputs = new InputHandler(gamestate, [
-    {key: "KeyW", action: "moveUp", func: player},
-    {key: "KeyS", action: "moveDown", func: player},
-    {key: "ArrowUp", action: "moveUp", func: player2},
-    {key: "ArrowDown", action: "moveDown", func: player2}
-  ]);
+    {
+      func: player,
+      gamepadID: 0,
+      bindings: {
+        keyboard: [
+          {key: "KeyW", action: "moveUp"},
+          {key: "KeyS", action: "moveDown"},
+        ]
+      }
+    },
+    {func: player2,
+      bindings: {
+        keyboard: [
+          {key: "ArrowUp", action: "moveUp"},
+          {key: "ArrowDown", action: "moveDown"},
+        ]
+      }
+    }
+  ], player, player2, CONF.GAMEPAD.INPUT_THRESHOLD);
 const messageHandler = new messages(ctx, canvas);
 const countdown = new countdownHandler(CONF, ctx, canvas, resetGame);
 const interfaceHandler = new gui(countdown, gamestate);
