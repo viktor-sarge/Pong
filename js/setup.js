@@ -67,7 +67,8 @@ CONF.PADDLE.WIDTH,
 CONF.PADDLE.BASE_HEIGHT,
 CONF.GAME.BASE_COLOR,
 ctx,
-CONF.PLAYERS[0].IDENTIFIER
+CONF.PLAYERS[0].IDENTIFIER,
+canvas
 );
 
 const player2 = new Paddle(
@@ -77,11 +78,17 @@ CONF.PADDLE.WIDTH,
 CONF.PADDLE.BASE_HEIGHT,
 CONF.GAME.BASE_COLOR,
 ctx,
-CONF.PLAYERS[1].IDENTIFIER
+CONF.PLAYERS[1].IDENTIFIER,
+canvas
 );
 
 const net = new Net(CONF.GAME.BASE_COLOR, ctx);
-const inputs = new InputHandler(gamestate);
+const inputs = new InputHandler(gamestate, [
+    {key: "KeyW", action: "moveUp", func: player},
+    {key: "KeyS", action: "moveDown", func: player},
+    {key: "ArrowUp", action: "moveUp", func: player2},
+    {key: "ArrowDown", action: "moveDown", func: player2}
+  ]);
 const messageHandler = new messages(ctx, canvas);
 const countdown = new countdownHandler(CONF, ctx, canvas, resetGame);
 const interfaceHandler = new gui(countdown, gamestate);

@@ -1,47 +1,27 @@
 export default class InputHandler {
-    constructor(gameState) {
-        // Keyhandler variables
-        this.arrowUpPressed = false;
-        this.arrowDownPressed = false;
-        this.wPressed = false;
-        this.sPressed = false;
+    constructor(gameState, bindings) {
+        this.keys = {};
         this.gameState = gameState;
+        this.bindings = bindings; // Array of objects like {key: "KeyS", action: "moveDown", func: player}
 
-        // Keyboard controls event listers
         document.addEventListener("keydown", event => {
-            switch(event.code) {
-            case 'ArrowUp':
-                this.arrowUpPressed = true;
-                break;
-            case 'ArrowDown':
-                this.arrowDownPressed = true;
-                break;
-            case 'KeyW':
-                this.wPressed = true;
-                break;
-            case 'KeyS':
-                this.sPressed = true;
-                break;
-            case 'KeyP':
+            if(event.code === "KeyP") {
                 this.gameState.paused = !this.gameState.paused;
-                break
+            }
+            else {
+                this.keys[event.code] = true;
             }
         });
 
         document.addEventListener("keyup", event => {
-            switch(event.code) {
-            case 'ArrowUp':
-                this.arrowUpPressed = false;
-                break;
-            case 'ArrowDown':
-                this.arrowDownPressed = false;
-                break;
-            case 'KeyW':
-                this.wPressed = false;
-                break;
-            case 'KeyS':
-                this.sPressed = false;
-                break;
+            this.keys[event.code] = false;
+        });
+    }
+    update() {
+        // Runs provided action on provided func if .key is true in keys{}
+        this.bindings.forEach(binding => {
+            if(this.keys[binding.key]) {
+                binding.func[binding.action](); 
             }
         });
     }

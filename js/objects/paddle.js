@@ -1,5 +1,5 @@
 export default class Paddle {
-    constructor(x, y, width, height, color, ctx, id) {
+    constructor(x, y, width, height, color, ctx, id, canvas) {
       this.x = x;
       this.y = y;
       this.width = width;
@@ -13,14 +13,15 @@ export default class Paddle {
       this.originalX = x;
       this.originalY = y;
       this.id = id;
+      this.canvas = canvas;
     }
   
     moveUp() {
       if(this.y - this.speed > 0) this.y -= this.speed;
     }
   
-    moveDown(canvasHeight) {
-        if(this.y + this.height + this.speed < canvasHeight) this.y += this.speed;
+    moveDown() {
+        if(this.y + this.height + this.speed < this.canvas.height) this.y += this.speed;
     }
   
     draw() {

@@ -15,6 +15,7 @@
 		"countdown",
 		"messages",
 		"gui",
-		"audio"
+		"audio",
+		"keybindings"
 	]
 }

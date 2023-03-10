@@ -73,18 +73,7 @@ function checkCollisions(player, opponent, ball) {
 function update() {
 
   ball.update(canvasWidth, canvasHeight);
-
-  // Movement by keyboard
-  if (inputs.wPressed) {
-      player.moveUp();
-  } else if (inputs.sPressed) {
-      player.moveDown(canvasHeight);
-  }
-  if (gamestate.multiplayer && inputs.arrowUpPressed) {
-    player2.moveUp();
-  } else if (gamestate.multiplayer && inputs.arrowDownPressed) {
-    player2.moveDown(canvasHeight);
-  }
+  inputs.update()
 
   // Movement by gamepads
   gamepads = navigator.getGamepads();
