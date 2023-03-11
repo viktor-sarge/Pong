@@ -9,7 +9,7 @@ export default class AudioHandler{
     registerSound(file) {
         const sound = new Howl({src: file});
         const index = this.sounds.push(sound) - 1;
-        console.log(`Registered sound with index ${index}`);
+        console.log(`Registered sound ${file} with index ${index}`);
         return index;
     }
 

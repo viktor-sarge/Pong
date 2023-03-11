@@ -8,7 +8,6 @@ import InputHandler from "../../engine/inputHandler.js";
 import CountdownHandler from "./objects/countdown.js";
 import GameEngine from '../../engine/main.js';
 
-
 // TODO: Refactor so it sets up only game specific classes
 
 let gamestate = {

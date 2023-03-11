@@ -1,4 +1,4 @@
-export default class gui {
+export default class GUI {
     constructor(countdown, gamestate) {
         // Canvas and contex refs
         this.canvas = document.getElementById('myCanvas');

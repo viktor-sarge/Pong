@@ -3,13 +3,13 @@
 // Modes and their respective update/draw functions should be provided to constructor
 import Messages from "./messages.js";
 import AudioHandler from "./audio.js";
-import gui from "./gui.js";
+import GUI from "./gui.js";
 
 export default class GameEngine {
     constructor(config) {
         this.messages = new Messages;
         this.audio = new AudioHandler;
-        this.gui = new gui;
+        this.gui = new GUI;
     }
 
     update() {
