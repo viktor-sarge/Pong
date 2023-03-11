@@ -1,8 +1,5 @@
-// TODO: Refactor to be an abstraction layer on top of Howler
-// Should have a .register(sound) method returning a ref
-// Register new howler sounds in a map and return the key
-// a .play(ref) method provides playback functionality
-// Howler will likely not be switched out, but at least it's possible
+// An abstraction layer on top of Howler
+// Should Howler ever need replacing it's nice to have a single place to refactor
 
 export default class AudioHandler{
     constructor() {
