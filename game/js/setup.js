@@ -6,11 +6,11 @@ import CONF from '../config/config.json' assert {type: 'json'};
 import Net from "./objects/net.js";
 import InputHandler from "../../engine/inputHandler.js";
 import CountdownHandler from "./objects/countdown.js";
-import gui from "../../engine/gui.js"; 
+import GameEngine from '../../engine/main.js';
+
 
 // TODO: Refactor so it sets up only game specific classes
 
-// Game state variables
 let gamestate = {
   multiplayer: false,
   paused: false,
@@ -18,9 +18,10 @@ let gamestate = {
   running: false
 }
 
-// Canvas and contex refs
-const canvas = document.getElementById('myCanvas');
-const ctx = canvas.getContext('2d');
+const engine = new GameEngine({}, gamestate);
+
+const canvas = engine.gui.getCurrentCanvas();
+const ctx = engine.gui.getCurrentCtx();
 
 // Make fullscreen
 canvas.width = window.innerWidth;
@@ -105,7 +106,8 @@ const inputs = new InputHandler(gamestate, [
   ], player, player2, CONF.GAMEPAD.INPUT_THRESHOLD);
 
 const countdown = new CountdownHandler(CONF, ctx, canvas, resetGame);
-const interfaceHandler = new gui(countdown, gamestate);
+engine.gui.init(countdown, gamestate);
+// const interfaceHandler = new gui(countdown, gamestate);
 
 function resetGame() {
   gamestate.gameOver = false;
@@ -118,4 +120,4 @@ function resetGame() {
   ball.serve(canvas);
 }
 
-export {canvas, ctx, scorecounter, bouncecounter, net, ball, player, player2, inputs, canvasWidth, canvasHeight, canvasCenterX, canvasCenterY, gamestate, resetGame, countdown, interfaceHandler};
+export {canvas, ctx, scorecounter, bouncecounter, net, ball, player, player2, inputs, canvasWidth, canvasHeight, canvasCenterX, canvasCenterY, gamestate, resetGame, countdown, engine};

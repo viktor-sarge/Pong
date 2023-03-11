@@ -16,13 +16,11 @@ import {
   canvasHeight,
   canvasWidth,
   gamestate, 
-  interfaceHandler } from "./setup.js";
+  engine } from "./setup.js";
 
 import * as helpers from './helpers/helperFunctions.js';
 
 // TODO: Refactor so it imports the engine and provides config with update/draw methods for game modes
-import GameEngine from '../../engine/main.js';
-const engine = new GameEngine();
 
 
 const soundBounce = engine.audio.registerSound('game/audio/score.mp3');
@@ -32,7 +30,7 @@ function gameLoop() {
   if(gamestate.gameOver) {
     if(gamestate.running) {
       declareWinner()
-      interfaceHandler.showRestart();
+      engine.gui.showRestart();
     }
   } else if(gamestate.paused){
     draw();
