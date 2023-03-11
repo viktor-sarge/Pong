@@ -8,7 +8,7 @@ export default class Ball {
       this.angle = this.getRandomAngle();
       this.ctx = ctx;
       this.soundBounce = new Howl({
-        src: ['../../523088__magnuswaker__energy-bounce-1.wav']
+        src: ['/game/audio/523088__magnuswaker__energy-bounce-1.wav']
       });
     }
 

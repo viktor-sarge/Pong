@@ -1,14 +1,14 @@
-import TEXTS from './data/strings.json' assert {type: 'json'};
-import scoreboard from "./game/objects/scoreboard.js";
-import bouncemeter from "./game/objects/bouncemeter.js";
-import Ball from "./game/objects/ball.js";
-import Paddle from "./game/objects/paddle.js";
-import CONF from './config/config.json' assert {type: 'json'};
-import Net from "./game/objects/net.js";
-import InputHandler from "./engine/inputHandler.js";
-import messages from "./engine/messages.js";
-import countdownHandler from "./game/objects/countdown.js";
-import gui from "./engine/gui.js"; 
+import scoreboard from "./objects/scoreboard.js";
+import bouncemeter from "./objects/bouncemeter.js";
+import Ball from "./objects/ball.js";
+import Paddle from "./objects/paddle.js";
+import CONF from '../config/config.json' assert {type: 'json'};
+import Net from "./objects/net.js";
+import InputHandler from "../../engine/inputHandler.js";
+import CountdownHandler from "./objects/countdown.js";
+import gui from "../../engine/gui.js"; 
+
+// TODO: Refactor so it sets up only game specific classes
 
 // Game state variables
 let gamestate = {
@@ -103,8 +103,8 @@ const inputs = new InputHandler(gamestate, [
       }
     }
   ], player, player2, CONF.GAMEPAD.INPUT_THRESHOLD);
-const messageHandler = new messages(ctx, canvas);
-const countdown = new countdownHandler(CONF, ctx, canvas, resetGame);
+
+const countdown = new CountdownHandler(CONF, ctx, canvas, resetGame);
 const interfaceHandler = new gui(countdown, gamestate);
 
 function resetGame() {
@@ -118,17 +118,4 @@ function resetGame() {
   ball.serve(canvas);
 }
 
-function declareWinner() {
-  let message;
-  if(scorecounter.winner() === 'p1') {
-    const randomIndex = Math.floor(Math.random() * TEXTS.WINNER.P1.length);
-    message = TEXTS.WINNER.P1[randomIndex];
-  } else {
-    const randomIndex = Math.floor(Math.random() * TEXTS.WINNER.P2.length);
-    message = TEXTS.WINNER.P2[randomIndex];
-  }
-  messageHandler.write(CONF.TEXT_SETTINGS.BIG, message);
-  gamestate.running = false;
-}
-
-export {canvas, ctx, scorecounter, bouncecounter, net, ball, player, player2, inputs,messageHandler, canvasWidth, canvasHeight, canvasCenterX, canvasCenterY, gamestate, resetGame, declareWinner, countdown, interfaceHandler};
+export {canvas, ctx, scorecounter, bouncecounter, net, ball, player, player2, inputs, canvasWidth, canvasHeight, canvasCenterX, canvasCenterY, gamestate, resetGame, countdown, interfaceHandler};

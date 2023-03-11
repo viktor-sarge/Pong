@@ -32,6 +32,5 @@ export default class gui {
 }
 
 // TODO: This should be refactored to ge general purpose 
-// Should: 
-// * take config of nr/type of screens (canvas / full screen divs) and a ref
+// * Set up any number of screens / canvases based in config
 // * Have a method to show screens by ref and hide others. 

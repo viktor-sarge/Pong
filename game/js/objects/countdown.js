@@ -1,4 +1,4 @@
-export default class countdownHanler {
+export default class CountdownHandler {
     constructor(CONF, ctx, canvas, resetGame) {
         this.CONF = CONF;
         this.ctx = ctx;
@@ -6,10 +6,10 @@ export default class countdownHanler {
         this.resetGame = resetGame;
         this.countdown = CONF.GAME.COUNTDOWN.NR_OF_STEPS
         this.beep = new Howl({
-            src: ['../../555061__magnuswaker__repeatable-beep.wav']
+            src: ['/game/audio/555061__magnuswaker__repeatable-beep.wav']
         });
         this.startsound = new Howl({
-            src: ['../../641042__magnuswaker__racing-buzzer.wav']
+            src: ['/game/audio/641042__magnuswaker__racing-buzzer.wav']
         });
     }
     start() {
