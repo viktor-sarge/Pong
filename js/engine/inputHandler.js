@@ -4,6 +4,7 @@ export default class InputHandler {
         this.gameState = gameState;
         this.bindings = bindings;
 
+        // TODO start: Refactor this controller related code to be general purpose and covered by bindings. 
         this.player = player;
         this.player2 = player2;
         // Get controllers
@@ -13,6 +14,7 @@ export default class InputHandler {
         this.stickY;
         this.p2stickY;
         this.INPUT_THRESHOLD = INPUT_THRESHOLD;
+        // End todo
 
         document.addEventListener("keydown", event => {
             if(event.code === "KeyP") {
@@ -37,6 +39,7 @@ export default class InputHandler {
             })
         });
 
+        // TODO start: Refactor this controler related code to be general purpose and covered by bindings
         // Movement by gamepads
         this.gamepads = navigator.getGamepads();
         this.gamepad = this.gamepads[0];
@@ -56,5 +59,6 @@ export default class InputHandler {
                 }
             }
         })
+        // End todo
     }
 }

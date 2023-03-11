@@ -1,14 +1,14 @@
 import TEXTS from './data/strings.json' assert {type: 'json'};
-import scoreboard from "./objects/scoreboard.js";
-import bouncemeter from "./objects/bouncemeter.js";
-import Ball from "./objects/ball.js";
-import Paddle from "./objects/paddle.js";
+import scoreboard from "./game/objects/scoreboard.js";
+import bouncemeter from "./game/objects/bouncemeter.js";
+import Ball from "./game/objects/ball.js";
+import Paddle from "./game/objects/paddle.js";
 import CONF from './config/config.json' assert {type: 'json'};
-import Net from "./objects/net.js";
-import InputHandler from "./helpers/inputHandler.js";
-import messages from "./objects/messages.js";
-import countdownHandler from "./objects/countdown.js";
-import gui from "./helpers/gui.js"; 
+import Net from "./game/objects/net.js";
+import InputHandler from "./engine/inputHandler.js";
+import messages from "./engine/messages.js";
+import countdownHandler from "./game/objects/countdown.js";
+import gui from "./engine/gui.js"; 
 
 // Game state variables
 let gamestate = {

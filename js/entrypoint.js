@@ -20,16 +20,11 @@ import {
   declareWinner,
   interfaceHandler } from "./setup.js";
 
-// Helper function checking if ball moves right or left by radian angle
-function anglePointingRight(angle) {
-  return Math.cos(angle) > 0; // Positive cosine means right
-}
+import * as helpers from './game/helpers/helperFunctions.js';
 
 const soundBounce = new Howl({
   src: ['../score.mp3']
 });
-
-
 
 function gameLoop() {
   requestAnimationFrame(gameLoop);
@@ -50,7 +45,7 @@ function gameLoop() {
 function checkCollisions(player, opponent, ball) {
   // Collision checking player / ball
   if(player.intersects(ball)) {
-    anglePointingRight(ball.angle) 
+    helpers.anglePointingRight(ball.angle) 
         ? ball.x = player.x - ball.radius 
         : ball.x = player.x + player.width + ball.radius;
     ball.switchDirection();

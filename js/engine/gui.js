@@ -30,3 +30,8 @@ export default class gui {
         this.restartButton.style.display = 'block';
     }
 }
+
+// TODO: This should be refactored to ge general purpose 
+// Should: 
+// * take config of nr/type of screens (canvas / full screen divs) and a ref
+// * Have a method to show screens by ref and hide others. 
