@@ -1,10 +1,13 @@
 export default class Messages {
-    write(settings, message, ctx, canvas) {
+    write(settings, message, ctx, canvas, x, y) {
         ctx.fillStyle = settings.COLOR;
         ctx.font = settings.FONT;
         ctx.textAlign = settings.ALIGN;
-        ctx.fillText(message, canvas.width / 2, canvas.height / 2);
+        if(x && y) {
+            ctx.fillText(message, x, y);
+        } else {
+            ctx.fillText(message, canvas.width / 2, canvas.height / 2);
+        }
     }
 }
 
-// TODO: Should be able to write at any position

@@ -101,7 +101,7 @@ engine.input.setup(gamestate, [
 ]);
 engine.input.doHackyGameSpecificSetup(player, player2, CONF.GAMEPAD.INPUT_THRESHOLD)
 
-const countdown = new CountdownHandler(CONF, ctx, canvas, resetGame, engine.audio);
+const countdown = new CountdownHandler(CONF, ctx, canvas, resetGame, engine.audio, engine.messages);
 engine.gui.init(countdown, gamestate);
 
 function resetGame() {
