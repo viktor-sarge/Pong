@@ -52,7 +52,8 @@ canvas.height / 2,
 CONF.BALL.RADIUS, 
 CONF.BALL.SPEED, 
 CONF.BALL.ANGLE_RANGES,
-ctx
+ctx,
+engine.audio
 );
 
 const player = new Paddle(
@@ -100,7 +101,7 @@ engine.input.setup(gamestate, [
 ]);
 engine.input.doHackyGameSpecificSetup(player, player2, CONF.GAMEPAD.INPUT_THRESHOLD)
 
-const countdown = new CountdownHandler(CONF, ctx, canvas, resetGame);
+const countdown = new CountdownHandler(CONF, ctx, canvas, resetGame, engine.audio);
 engine.gui.init(countdown, gamestate);
 
 function resetGame() {

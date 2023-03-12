@@ -1,5 +1,5 @@
 export default class Ball {
-    constructor(x, y, radius, speed, angleRanges, ctx) {
+    constructor(x, y, radius, speed, angleRanges, ctx, audioengine) {
       this.x = x;
       this.y = y;
       this.radius = radius;
@@ -7,9 +7,8 @@ export default class Ball {
       this.angleRanges = angleRanges;
       this.angle = this.getRandomAngle();
       this.ctx = ctx;
-      this.soundBounce = new Howl({
-        src: ['/game/audio/523088__magnuswaker__energy-bounce-1.wav']
-      });
+      this.audio = audioengine;
+      this.soundBounce = this.audio.registerSound('/game/audio/523088__magnuswaker__energy-bounce-1.wav');
     }
 
     update(canvasWidth, canvasHeight) {
@@ -21,41 +20,41 @@ export default class Ball {
       if (this.x - this.radius < 0) {
         this.x = this.radius;
         this.angle = Math.PI - this.angle;
-        if(!this.soundBounce.playing()) {
-          this.soundBounce.stop(); 
-          this.soundBounce.play()
+        if(this.audio.playing(this.soundBounce)) {
+          this.audio.stop(this.soundBounce); 
+          this.audio.play(this.soundBounce);
         } else {
-          this.soundBounce.play();
+          this.audio.play(this.soundBounce);
         }
       }
       if (this.x + this.radius > canvasWidth) {
         this.x = canvasWidth - this.radius;
         this.angle = Math.PI - this.angle;
-        if(!this.soundBounce.playing()) {
-          this.soundBounce.stop(); 
-          this.soundBounce.play()
+        if(this.audio.playing(this.soundBounce)) {
+          this.audio.stop(this.soundBounce); 
+          this.audio.play(this.soundBounce);
         } else {
-          this.soundBounce.play();
+          this.audio.play(this.soundBounce);
         }
       }
       if (this.y - this.radius < 0) {
         this.y = this.radius;
         this.angle = -this.angle;
-        if(!this.soundBounce.playing()) {
-          this.soundBounce.stop(); 
-          this.soundBounce.play()
+        if(this.audio.playing(this.soundBounce)) {
+          this.audio.stop(this.soundBounce); 
+          this.audio.play(this.soundBounce);
         } else {
-          this.soundBounce.play();
+          this.audio.play(this.soundBounce);
         }
       }
       if (this.y + this.radius > canvasHeight) {
         this.y = canvasHeight - this.radius;
         this.angle = -this.angle;
-        if(!this.soundBounce.playing()) {
-          this.soundBounce.stop(); 
-          this.soundBounce.play()
+        if(this.audio.playing(this.soundBounce)) {
+          this.audio.stop(this.soundBounce); 
+          this.audio.play(this.soundBounce);
         } else {
-          this.soundBounce.play();
+          this.audio.play(this.soundBounce);
         }
       }
     }

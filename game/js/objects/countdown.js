@@ -1,16 +1,13 @@
 export default class CountdownHandler {
-    constructor(CONF, ctx, canvas, resetGame) {
+    constructor(CONF, ctx, canvas, resetGame, audioplayer) {
         this.CONF = CONF;
         this.ctx = ctx;
         this.canvas = canvas;
         this.resetGame = resetGame;
         this.countdown = CONF.GAME.COUNTDOWN.NR_OF_STEPS
-        this.beep = new Howl({
-            src: ['/game/audio/555061__magnuswaker__repeatable-beep.wav']
-        });
-        this.startsound = new Howl({
-            src: ['/game/audio/641042__magnuswaker__racing-buzzer.wav']
-        });
+        this.audio = audioplayer;
+        this.beep = this.audio.registerSound('/game/audio/555061__magnuswaker__repeatable-beep.wav');
+        this.startsound = this.audio.registerSound('/game/audio/641042__magnuswaker__racing-buzzer.wav');
     }
     start() {
         // Immediately display the first number of the countdown
@@ -19,7 +16,7 @@ export default class CountdownHandler {
         this.ctx.font = '96px Vermin';
         this.ctx.fillText(this.countdown, this.canvas.width / 2, this.canvas.height / 2);
         this.countdown--;
-        this.beep.play();
+        this.audio.play(this.beep);
 
         // Start countdown
         let timerIntervalId = setInterval(() => {
@@ -33,7 +30,7 @@ export default class CountdownHandler {
             this.ctx.fillText(this.countdown, this.canvas.width / 2, this.canvas.height / 2);
     
             this.countdown--;
-            this.beep.play();
+            this.audio.play(this.beep);
             } else {
             // clear the canvas
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -41,7 +38,7 @@ export default class CountdownHandler {
     
             // stop the timer
             clearInterval(timerIntervalId);
-            this.startsound.play();
+            this.audio.play(this.startsound);
             this.countdown = this.CONF.GAME.COUNTDOWN.NR_OF_STEPS;
             }
         }, this.CONF.GAME.COUNTDOWN.STEP_DELAY_IN_MS);
