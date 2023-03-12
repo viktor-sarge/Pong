@@ -13,7 +13,15 @@ export default class AudioHandler{
         return index;
     }
 
-    play(soundIndex) {
-        this.sounds[soundIndex].play();
+    play(index) {
+        this.sounds[index].play();
+    }
+
+    stop(index) {
+        this.sounds[index].stop();
+    }
+
+    playing(index) {
+        return this.sounds[index].playing();
     }
 }
