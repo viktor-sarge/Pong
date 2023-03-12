@@ -1,9 +1,12 @@
 export default class GUI {
-    constructor(countdown, gamestate) {
+    constructor() {
         // Canvas and contex refs
         this.canvas = document.getElementById('myCanvas');
         this.ctx = this.canvas.getContext('2d');
-        // this.gamestate = gamestate;
+
+        // Make canvas fullscreen
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
     }
 
     init(countdown, gamestate) {

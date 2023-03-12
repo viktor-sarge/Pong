@@ -1,19 +1,19 @@
 export default class InputHandler {
-    constructor(gameState, bindings, player, player2, INPUT_THRESHOLD ) {
+    constructor() {
         this.keys = {};
-        this.gameState = gameState;
-        this.bindings = bindings;
+        this.gameState;
+        this.bindings;
 
         // TODO start: Refactor this controller related code to be general purpose and covered by bindings. 
-        this.player = player;
-        this.player2 = player2;
+        this.player;
+        this.player2;
+        this.INPUT_THRESHOLD;
         // Get controllers
         this.gamepads = navigator.getGamepads(); // get array of connected gamepads
         this.gamepad = this.gamepads[0];
         this.gamepad2 = this.gamepads[1];
         this.stickY;
         this.p2stickY;
-        this.INPUT_THRESHOLD = INPUT_THRESHOLD;
         // End todo
 
         document.addEventListener("keydown", event => {
@@ -29,6 +29,17 @@ export default class InputHandler {
             this.keys[event.code] = false;
         });
     }
+
+    setup(gameState, bindings) {
+        this.gameState = gameState;
+        this.bindings = bindings;
+    }
+    doHackyGameSpecificSetup(player, player2, INPUT_THRESHOLD) {
+        this.player = player;
+        this.player2 = player2;
+        this.INPUT_THRESHOLD = INPUT_THRESHOLD;
+    }
+
     update() {
         // Runs provided action on provided func if .key is true in keys{}
         this.bindings.forEach(group => {

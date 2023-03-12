@@ -9,8 +9,7 @@ import {
   net, 
   ball, 
   player, 
-  player2,
-  inputs, 
+  player2, 
   canvasCenterX,
   canvasCenterY, 
   canvasHeight,
@@ -20,8 +19,7 @@ import {
 
 import * as helpers from './helpers/helperFunctions.js';
 
-// TODO: Refactor so it imports the engine and provides config with update/draw methods for game modes
-
+// TODO: Refactor so registers the game specific update/draw methods in the engine.
 
 const soundBounce = engine.audio.registerSound('game/audio/score.mp3');
 
@@ -52,7 +50,6 @@ function checkCollisions(player, opponent, ball) {
     player.shrink();
     opponent.grow();
     bouncecounter.decrease();
-    // soundBounce.play();
     engine.audio.play(soundBounce);
     if(bouncecounter.remaining() === 0) {
       gamestate.paused = true;
@@ -62,10 +59,8 @@ function checkCollisions(player, opponent, ball) {
 }
 
 function update() {
-
   ball.update(canvasWidth, canvasHeight);
-  inputs.update()
-
+  engine.input.update()
   checkCollisions(player, player2, ball);
   if(gamestate.multiplayer) checkCollisions(player2, player, ball);
 }

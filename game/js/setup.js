@@ -4,7 +4,6 @@ import Ball from "./objects/ball.js";
 import Paddle from "./objects/paddle.js";
 import CONF from '../config/config.json' assert {type: 'json'};
 import Net from "./objects/net.js";
-import InputHandler from "../../engine/inputHandler.js";
 import CountdownHandler from "./objects/countdown.js";
 import GameEngine from '../../engine/main.js';
 
@@ -21,10 +20,6 @@ const engine = new GameEngine({}, gamestate);
 
 const canvas = engine.gui.getCurrentCanvas();
 const ctx = engine.gui.getCurrentCtx();
-
-// Make fullscreen
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
 
 // Canvas variables
 let canvasWidth = canvas.width;
@@ -83,30 +78,30 @@ canvas
 );
 
 const net = new Net(CONF.GAME.BASE_COLOR, ctx);
-const inputs = new InputHandler(gamestate, [
-    {
-      func: player,
-      gamepadID: 0,
-      bindings: {
-        keyboard: [
-          {key: "KeyW", action: "moveUp"},
-          {key: "KeyS", action: "moveDown"},
-        ]
-      }
-    },
-    {func: player2,
-      bindings: {
-        keyboard: [
-          {key: "ArrowUp", action: "moveUp"},
-          {key: "ArrowDown", action: "moveDown"},
-        ]
-      }
+engine.input.setup(gamestate, [
+  {
+    func: player,
+    gamepadID: 0,
+    bindings: {
+      keyboard: [
+        {key: "KeyW", action: "moveUp"},
+        {key: "KeyS", action: "moveDown"},
+      ]
     }
-  ], player, player2, CONF.GAMEPAD.INPUT_THRESHOLD);
+  },
+  {func: player2,
+    bindings: {
+      keyboard: [
+        {key: "ArrowUp", action: "moveUp"},
+        {key: "ArrowDown", action: "moveDown"},
+      ]
+    }
+  }
+]);
+engine.input.doHackyGameSpecificSetup(player, player2, CONF.GAMEPAD.INPUT_THRESHOLD)
 
 const countdown = new CountdownHandler(CONF, ctx, canvas, resetGame);
 engine.gui.init(countdown, gamestate);
-// const interfaceHandler = new gui(countdown, gamestate);
 
 function resetGame() {
   gamestate.gameOver = false;
@@ -119,4 +114,4 @@ function resetGame() {
   ball.serve(canvas);
 }
 
-export {canvas, ctx, scorecounter, bouncecounter, net, ball, player, player2, inputs, canvasWidth, canvasHeight, canvasCenterX, canvasCenterY, gamestate, resetGame, countdown, engine};
+export {canvas, ctx, scorecounter, bouncecounter, net, ball, player, player2, canvasWidth, canvasHeight, canvasCenterX, canvasCenterY, gamestate, resetGame, countdown, engine};

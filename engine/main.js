@@ -4,12 +4,17 @@
 import Messages from "./messages.js";
 import AudioHandler from "./audio.js";
 import GUI from "./gui.js";
-
+import InputHandler from "./inputHandler.js";
 export default class GameEngine {
     constructor(config) {
         this.messages = new Messages;
         this.audio = new AudioHandler;
-        this.gui = new GUI;
+        this.gui = new GUI
+        this.input = new InputHandler;
+    }
+
+    start() {
+        
     }
 
     update() {
