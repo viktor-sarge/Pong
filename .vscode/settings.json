@@ -18,6 +18,7 @@
 		"audio",
 		"keybindings",
 		"engine",
-		"paddle"
+		"paddle",
+		"setup"
 	]
 }

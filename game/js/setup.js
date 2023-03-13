@@ -16,46 +16,46 @@ const canvasVars = engine.gui.getCanvasVars();
 /* Game specific classes initialized here */ 
 const scorecounter = new scoreboard();
 
-const bouncecounter = new bouncemeter(
-    CONF.GAME.MATCH_LENGTH_IN_BOUNCES,
-    CONF.BOUNCEMETER.RADIUS,
-    CONF.GAME.BASE_COLOR
-  );
+const bouncecounter = new bouncemeter({
+  bounces: CONF.GAME.MATCH_LENGTH_IN_BOUNCES,
+  radius: CONF.BOUNCEMETER.RADIUS,
+  color: CONF.GAME.BASE_COLOR
+});
 
 const ball = new Ball(
-canvasVars.canvasWidth / 2, 
-canvasVars.canvasHeight / 2, 
-CONF.BALL.RADIUS, 
-CONF.BALL.SPEED, 
-CONF.BALL.ANGLE_RANGES,
-canvasVars.ctx,
-engine.audio
+  canvasVars.canvasWidth / 2, 
+  canvasVars.canvasHeight / 2, 
+  CONF.BALL.RADIUS, 
+  CONF.BALL.SPEED, 
+  CONF.BALL.ANGLE_RANGES,
+  canvasVars.ctx,
+  engine.audio
 );
 
 const player = new Paddle(
-CONF.PADDLE.DIST_FROM_EDGE,
-canvasVars.canvasHeight/2,
-CONF.PADDLE.WIDTH,
-CONF.PADDLE.BASE_HEIGHT,
-CONF.GAME.BASE_COLOR,
-canvasVars.ctx,
-CONF.PLAYERS[0].IDENTIFIER,
-canvasVars.canvas,
-"left",
-CONF.PADDLE.DIST_FROM_EDGE
+  CONF.PADDLE.DIST_FROM_EDGE,
+  canvasVars.canvasHeight/2,
+  CONF.PADDLE.WIDTH,
+  CONF.PADDLE.BASE_HEIGHT,
+  CONF.GAME.BASE_COLOR,
+  canvasVars.ctx,
+  CONF.PLAYERS[0].IDENTIFIER,
+  canvasVars.canvas,
+  "left",
+  CONF.PADDLE.DIST_FROM_EDGE
 );
 
 const player2 = new Paddle(
-canvasVars.canvasWidth-CONF.PADDLE.WIDTH-CONF.PADDLE.DIST_FROM_EDGE,
-canvasVars.canvasHeight/2,
-CONF.PADDLE.WIDTH,
-CONF.PADDLE.BASE_HEIGHT,
-CONF.GAME.BASE_COLOR,
-canvasVars.ctx,
-CONF.PLAYERS[1].IDENTIFIER,
-canvasVars.canvas,
-"right",
-CONF.PADDLE.DIST_FROM_EDGE
+  canvasVars.canvasWidth-CONF.PADDLE.WIDTH-CONF.PADDLE.DIST_FROM_EDGE,
+  canvasVars.canvasHeight/2,
+  CONF.PADDLE.WIDTH,
+  CONF.PADDLE.BASE_HEIGHT,
+  CONF.GAME.BASE_COLOR,
+  canvasVars.ctx,
+  CONF.PLAYERS[1].IDENTIFIER,
+  canvasVars.canvas,
+  "right",
+  CONF.PADDLE.DIST_FROM_EDGE
 );
 
 const net = new Net(CONF.GAME.BASE_COLOR, canvasVars.ctx);
