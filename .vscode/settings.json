@@ -17,6 +17,7 @@
 		"gui",
 		"audio",
 		"keybindings",
-		"engine"
+		"engine",
+		"paddle"
 	]
 }

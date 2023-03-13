@@ -13,12 +13,6 @@ import * as helpers from './helpers/helperFunctions.js';
 const engine = new GameEngine({}, CONF, TEXTS);
 const canvasVars = engine.gui.getCanvasVars();
 
-/* Window resize / game specific / registered with engine */
-function resize() {
-  player2.realign(canvasVars.canvasWidth-CONF.PADDLE.WIDTH-CONF.PADDLE.DIST_FROM_EDGE);
-}
-engine.gui.registerWindowResizeFunction(resize);
-
 /* Game specific classes initialized here */ 
 const scorecounter = new scoreboard();
 
@@ -66,32 +60,12 @@ CONF.PADDLE.DIST_FROM_EDGE
 
 const net = new Net(CONF.GAME.BASE_COLOR, canvasVars.ctx);
 
+/* Window resize / game specific */
+function resize() {
+  player2.realign(canvasVars.canvasWidth-CONF.PADDLE.WIDTH-CONF.PADDLE.DIST_FROM_EDGE);
+}
 
-/* Input setup / game specific / register with engine */
-engine.input.setup([
-  {
-    func: player,
-    gamepadID: 0,
-    bindings: {
-      keyboard: [
-        {key: "KeyW", action: "moveUp"},
-        {key: "KeyS", action: "moveDown"},
-      ]
-    }
-  },
-  {func: player2,
-    bindings: {
-      keyboard: [
-        {key: "ArrowUp", action: "moveUp"},
-        {key: "ArrowDown", action: "moveDown"},
-      ]
-    }
-  }
-]);
-/* Input setup / gamepads / game specific / register with engine */ 
-engine.input.doHackyGameSpecificSetup(player, player2, CONF.GAMEPAD.INPUT_THRESHOLD)
-
-/* Countdown and reset / game specific / register with engine / GUI */
+/* Countdown and reset / game specific / GUI */
 function resetGame() {
   engine.gamestate.gameOver = false;
   engine.gamestate.paused = false;
@@ -103,7 +77,6 @@ function resetGame() {
   ball.serve(canvasVars.canvas);
 }
 const countdown = new CountdownHandler(CONF, canvasVars.ctx, canvasVars.canvas, resetGame, engine.audio, engine.messages);
-engine.gui.init(countdown);
 
 const soundBounce = engine.audio.registerSound('game/audio/score.mp3');
 
@@ -142,10 +115,6 @@ function draw() {
   bouncecounter.draw(canvasVars.ctx, canvasVars.canvasCenterX, canvasVars.canvasCenterY);
 }
 
-engine.registerUpdateLogic(update);
-engine.registerDrawLogic(draw);
-
-
 function declareWinner() {
   let message;
   if(scorecounter.winner() === 'p1') {
@@ -159,6 +128,32 @@ function declareWinner() {
   engine.gamestate.running = false;
 }
 
+/* Registering game specifics with engine */ 
+engine.input.setup([
+  {
+    func: player,
+    gamepadID: 0,
+    bindings: {
+      keyboard: [
+        {key: "KeyW", action: "moveUp"},
+        {key: "KeyS", action: "moveDown"},
+      ]
+    }
+  },
+  {func: player2,
+    bindings: {
+      keyboard: [
+        {key: "ArrowUp", action: "moveUp"},
+        {key: "ArrowDown", action: "moveDown"},
+      ]
+    }
+  }
+]);
+engine.input.doHackyGameSpecificSetup(player, player2, CONF.GAMEPAD.INPUT_THRESHOLD)
+engine.gui.registerWindowResizeFunction(resize);
+engine.gui.init(countdown);
+engine.registerUpdateLogic(update);
+engine.registerDrawLogic(draw);
 engine.registerGameOverFunction(declareWinner);
 
 // Start the game loop
