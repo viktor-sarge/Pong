@@ -133,23 +133,35 @@ engine.input.setup([
   {
     func: player,
     gamepadID: 0,
+    gamepadInputThreshold: CONF.GAMEPAD.INPUT_THRESHOLD,
     bindings: {
       keyboard: [
         {key: "KeyW", action: "moveUp"},
         {key: "KeyS", action: "moveDown"},
-      ]
+      ],
+      gamepad: {
+        leftStickUp: "moveUp",
+        leftStickDown: "moveDown"
+      }
     }
   },
-  {func: player2,
+  { 
+    func: player2,
+    gamepadID: 1,
+    gamepadInputThreshold: CONF.GAMEPAD.INPUT_THRESHOLD,
     bindings: {
       keyboard: [
         {key: "ArrowUp", action: "moveUp"},
         {key: "ArrowDown", action: "moveDown"},
-      ]
+      ],
+      gamepad: {
+        leftStickUp: "moveUp",
+        leftStickDown: "moveDown"
+      }
     }
   }
 ]);
-engine.input.doHackyGameSpecificSetup(player, player2, CONF.GAMEPAD.INPUT_THRESHOLD)
+
 engine.gui.registerWindowResizeFunction(resize);
 engine.gui.init(countdown);
 engine.registerUpdateLogic(update);

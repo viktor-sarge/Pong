@@ -44,6 +44,7 @@ export default class GameEngine {
     registerGameOverFunction(gameOver) {
         this.gameOverFunction = gameOver;
     }
+
     registerUpdateLogic(update) {
         this.gameUpdateFunction = update;
     };
