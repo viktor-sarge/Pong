@@ -11,3 +11,4 @@ export default class Messages {
     }
 }
 
+// TODO: Add support for timed messages

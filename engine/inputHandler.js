@@ -1,7 +1,7 @@
 export default class InputHandler {
-    constructor() {
+    constructor(gameState) {
         this.keys = {};
-        this.gameState;
+        this.gameState = gameState;
         this.bindings;
 
         // TODO start: Refactor this controller related code to be general purpose and covered by bindings. 
@@ -30,8 +30,7 @@ export default class InputHandler {
         });
     }
 
-    setup(gameState, bindings) {
-        this.gameState = gameState;
+    setup(bindings) {
         this.bindings = bindings;
     }
     doHackyGameSpecificSetup(player, player2, INPUT_THRESHOLD) {

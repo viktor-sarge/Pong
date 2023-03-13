@@ -6,38 +6,20 @@ import CONF from '../config/config.json' assert {type: 'json'};
 import Net from "./objects/net.js";
 import CountdownHandler from "./objects/countdown.js";
 import GameEngine from '../../engine/main.js';
+import TEXTS from '../data/strings.json' assert {type: 'json'};
+import * as helpers from './helpers/helperFunctions.js';
 
-// TODO: Refactor so it sets up only game specific classes
+/* Game engine instantiation */
+const engine = new GameEngine({}, CONF, TEXTS);
+const canvasVars = engine.gui.getCanvasVars();
 
-let gamestate = {
-  multiplayer: false,
-  paused: false,
-  gameOver: false,
-  running: false
+/* Window resize / game specific / registered with engine */
+function resize() {
+  player2.realign(canvasVars.canvasWidth-CONF.PADDLE.WIDTH-CONF.PADDLE.DIST_FROM_EDGE);
 }
+engine.gui.registerWindowResizeFunction(resize);
 
-const engine = new GameEngine({}, gamestate);
-
-const canvas = engine.gui.getCurrentCanvas();
-const ctx = engine.gui.getCurrentCtx();
-
-// Canvas variables
-let canvasWidth = canvas.width;
-let canvasHeight = canvas.height;
-let canvasCenterX = canvasWidth / 2;
-let canvasCenterY = canvasHeight / 2;
-
-// Update canvas on window resize event listener
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  canvasWidth = canvas.width;
-  canvasHeight = canvas.height;
-  canvasCenterX = canvasWidth / 2;
-  canvasCenterY = canvasHeight / 2;
-  player2.realign(canvas.width-CONF.PADDLE.WIDTH-CONF.PADDLE.DIST_FROM_EDGE);
-});
-
+/* Game specific classes initialized here */ 
 const scorecounter = new scoreboard();
 
 const bouncecounter = new bouncemeter(
@@ -47,39 +29,42 @@ const bouncecounter = new bouncemeter(
   );
 
 const ball = new Ball(
-canvas.width / 2, 
-canvas.height / 2, 
+canvasVars.canvasWidth / 2, 
+canvasVars.canvasHeight / 2, 
 CONF.BALL.RADIUS, 
 CONF.BALL.SPEED, 
 CONF.BALL.ANGLE_RANGES,
-ctx,
+canvasVars.ctx,
 engine.audio
 );
 
 const player = new Paddle(
 CONF.PADDLE.DIST_FROM_EDGE,
-canvas.height/2,
+canvasVars.canvasHeight/2,
 CONF.PADDLE.WIDTH,
 CONF.PADDLE.BASE_HEIGHT,
 CONF.GAME.BASE_COLOR,
-ctx,
+canvasVars.ctx,
 CONF.PLAYERS[0].IDENTIFIER,
-canvas
+canvasVars.canvas
 );
 
 const player2 = new Paddle(
-canvas.width-CONF.PADDLE.WIDTH-CONF.PADDLE.DIST_FROM_EDGE,
-canvas.height/2,
+canvasVars.canvasWidth-CONF.PADDLE.WIDTH-CONF.PADDLE.DIST_FROM_EDGE,
+canvasVars.canvasHeight/2,
 CONF.PADDLE.WIDTH,
 CONF.PADDLE.BASE_HEIGHT,
 CONF.GAME.BASE_COLOR,
-ctx,
+canvasVars.ctx,
 CONF.PLAYERS[1].IDENTIFIER,
-canvas
+canvasVars.canvas
 );
 
-const net = new Net(CONF.GAME.BASE_COLOR, ctx);
-engine.input.setup(gamestate, [
+const net = new Net(CONF.GAME.BASE_COLOR, canvasVars.ctx);
+
+
+/* Input setup / game specific / register with engine */
+engine.input.setup([
   {
     func: player,
     gamepadID: 0,
@@ -99,20 +84,78 @@ engine.input.setup(gamestate, [
     }
   }
 ]);
+/* Input setup / gamepads / game specific / register with engine */ 
 engine.input.doHackyGameSpecificSetup(player, player2, CONF.GAMEPAD.INPUT_THRESHOLD)
 
-const countdown = new CountdownHandler(CONF, ctx, canvas, resetGame, engine.audio, engine.messages);
-engine.gui.init(countdown, gamestate);
-
+/* Countdown and reset / game specific / register with engine / GUI */
 function resetGame() {
-  gamestate.gameOver = false;
-  gamestate.paused = false;
-  gamestate.running = true;
+  engine.gamestate.gameOver = false;
+  engine.gamestate.paused = false;
+  engine.gamestate.running = true;
   player.reset();
   player2.reset();
   scorecounter.reset();
   bouncecounter.reset();
-  ball.serve(canvas);
+  ball.serve(canvasVars.canvas);
+}
+const countdown = new CountdownHandler(CONF, canvasVars.ctx, canvasVars.canvas, resetGame, engine.audio, engine.messages);
+engine.gui.init(countdown);
+
+const soundBounce = engine.audio.registerSound('game/audio/score.mp3');
+
+function checkCollisions(player, opponent, ball) {
+  // Collision checking player / ball
+  if(player.intersects(ball)) {
+    helpers.anglePointingRight(ball.angle) 
+        ? ball.x = player.x - ball.radius 
+        : ball.x = player.x + player.width + ball.radius;
+    ball.switchDirection();
+    scorecounter.score(player.id);
+    player.shrink();
+    opponent.grow();
+    bouncecounter.decrease();
+    engine.audio.play(soundBounce);
+    if(bouncecounter.remaining() === 0) {
+      engine.gamestate.paused = true;
+      engine.gamestate.gameOver = true;
+    }
+  }
 }
 
-export {canvas, ctx, scorecounter, bouncecounter, net, ball, player, player2, canvasWidth, canvasHeight, canvasCenterX, canvasCenterY, gamestate, resetGame, countdown, engine};
+function update() {
+  ball.update(canvasVars.canvasWidth, canvasVars.canvasHeight);
+  engine.input.update()
+  checkCollisions(player, player2, ball);
+  if(engine.gamestate.multiplayer) checkCollisions(player2, player, ball);
+}
+
+function draw() {
+  net.draw(canvasVars.canvasWidth, canvasVars.canvasHeight);
+  ball.draw(canvasVars.canvasWidth);
+  player.draw();
+  if(engine.gamestate.multiplayer) player2.draw();
+  scorecounter.draw(canvasVars.ctx, canvasVars.canvas);
+  bouncecounter.draw(canvasVars.ctx, canvasVars.canvasCenterX, canvasVars.canvasCenterY);
+}
+
+engine.registerUpdateLogic(update);
+engine.registerDrawLogic(draw);
+
+
+function declareWinner() {
+  let message;
+  if(scorecounter.winner() === 'p1') {
+    const randomIndex = Math.floor(Math.random() * TEXTS.WINNER.P1.length);
+    message = TEXTS.WINNER.P1[randomIndex];
+  } else {
+    const randomIndex = Math.floor(Math.random() * TEXTS.WINNER.P2.length);
+    message = TEXTS.WINNER.P2[randomIndex];
+  }
+  engine.messages.write(CONF.TEXT_SETTINGS.BIG, message, canvasVars.ctx, canvasVars.canvas);
+  engine.gamestate.running = false;
+}
+
+engine.registerGameOverFunction(declareWinner);
+
+// Start the game loop
+engine.start();

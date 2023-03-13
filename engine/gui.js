@@ -1,17 +1,41 @@
 export default class GUI {
-    constructor() {
-        // Canvas and contex refs
-        this.canvas = document.getElementById('myCanvas');
-        this.ctx = this.canvas.getContext('2d');
+    constructor(gamestate) {
+
+        this.gamestate = gamestate;
+        this.windowResizeFunction;
+
+        this.canvasVars = {
+            canvas: document.getElementById('myCanvas')
+        }
+        // Add ctx to canvasVars
+        this.canvasVars.ctx = this.canvasVars.canvas.getContext('2d');
 
         // Make canvas fullscreen
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+        this.canvasVars.canvas.width = window.innerWidth;
+        this.canvasVars.canvas.height = window.innerHeight;
+
+        // Add remaining values to canvasVars
+        this.canvasVars.canvasWidth = this.canvasVars.canvas.width;
+        this.canvasVars.canvasHeight = this.canvasVars.canvas.height;
+        this.canvasVars.canvasCenterX = this.canvasVars.canvasWidth / 2;
+        this.canvasVars.canvasCenterY = this.canvasVars.canvasHeight / 2;
+
+        // Update canvas on window resize event listener
+        window.addEventListener('resize', () => {
+            this.canvasVars.canvas.width = window.innerWidth;
+            this.canvasVars.canvas.height = window.innerHeight;
+
+            this.canvasVars.canvasWidth = this.canvasVars.canvas.width;
+            this.canvasVars.canvasHeight = this.canvasVars.canvas.height;
+            this.canvasVars.canvasCenterX = this.canvasVars.canvasWidth / 2;
+            this.canvasVars.canvasCenterY = this.canvasVars.canvasHeight / 2;
+
+            this.windowResizeFunction();
+        });
     }
 
-    init(countdown, gamestate) {
+    init(countdown) {
         this.countdown = countdown;
-        this.gamestate = gamestate;
         this.startbutton2player = document.getElementById('startbutton2player');
         this.restartButton = document.getElementById('restartButton');
         this.startscreen = document.getElementById('startscreen');
@@ -37,6 +61,10 @@ export default class GUI {
         })
     }
 
+    registerWindowResizeFunction(resizeFunction) {
+        this.windowResizeFunction = resizeFunction;
+    }
+
     showRestart() {
         this.restartButton.style.display = 'block';
     }
@@ -47,6 +75,10 @@ export default class GUI {
 
     getCurrentCtx() {
         return this.ctx;
+    }
+
+    getCanvasVars(){
+        return this.canvasVars;
     }
 
     createPage() {
