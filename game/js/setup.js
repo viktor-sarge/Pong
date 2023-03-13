@@ -46,7 +46,9 @@ CONF.PADDLE.BASE_HEIGHT,
 CONF.GAME.BASE_COLOR,
 canvasVars.ctx,
 CONF.PLAYERS[0].IDENTIFIER,
-canvasVars.canvas
+canvasVars.canvas,
+"left",
+CONF.PADDLE.DIST_FROM_EDGE
 );
 
 const player2 = new Paddle(
@@ -57,7 +59,9 @@ CONF.PADDLE.BASE_HEIGHT,
 CONF.GAME.BASE_COLOR,
 canvasVars.ctx,
 CONF.PLAYERS[1].IDENTIFIER,
-canvasVars.canvas
+canvasVars.canvas,
+"right",
+CONF.PADDLE.DIST_FROM_EDGE
 );
 
 const net = new Net(CONF.GAME.BASE_COLOR, canvasVars.ctx);

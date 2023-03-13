@@ -1,5 +1,5 @@
 export default class Paddle {
-    constructor(x, y, width, height, color, ctx, id, canvas) {
+    constructor(x, y, width, height, color, ctx, id, canvas, alignment, edgePadding) {
       this.x = x;
       this.y = y;
       this.width = width;
@@ -14,6 +14,8 @@ export default class Paddle {
       this.originalY = y;
       this.id = id;
       this.canvas = canvas;
+      this.alignment = alignment;
+      this.edgePadding = edgePadding;
     }
   
     moveUp() {
@@ -61,8 +63,16 @@ export default class Paddle {
     }
 
     reset() {
-      this.x = this.originalX;
-      this.y = this.originalY
+      switch(this.alignment) {
+        case "right":
+          this.x = this.canvas.width-this.width-this.edgePadding,
+          this.y = this.originalY
+          break;
+        case "left":
+          this.x = this.originalX;
+          this.y = this.originalY
+          break;
+      } 
       this.height = this.originalHeight;
     }
 
