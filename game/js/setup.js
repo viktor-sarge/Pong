@@ -138,10 +138,14 @@ engine.input.setup([
       keyboard: [
         {key: "KeyW", action: "moveUp"},
         {key: "KeyS", action: "moveDown"},
+        {key: "KeyB", action: "boost"},
       ],
       gamepad: {
         leftStickUp: "moveUp",
-        leftStickDown: "moveDown"
+        leftStickDown: "moveDown",
+        buttons: {
+          0: "boost"
+        }
       }
     }
   },
@@ -153,10 +157,14 @@ engine.input.setup([
       keyboard: [
         {key: "ArrowUp", action: "moveUp"},
         {key: "ArrowDown", action: "moveDown"},
+        {key: "KeyL", action: "boost"},
       ],
       gamepad: {
         leftStickUp: "moveUp",
-        leftStickDown: "moveDown"
+        leftStickDown: "moveDown",
+        buttons: {
+          0: "boost"
+        }
       }
     }
   }

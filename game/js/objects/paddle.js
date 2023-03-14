@@ -17,6 +17,7 @@ export default class Paddle {
       this.canvas = canvas;
       this.alignment = alignment;
       this.edgePadding = edgePadding;
+      this.boostOnCooldown = false;
     }
   
     moveUp() {
@@ -81,4 +82,19 @@ export default class Paddle {
       this.x = x;
     }
 
+    boost() {
+      if (!this.boostOnCooldown) {
+        // TODO: Play boost swoosh sound? 
+        this.speed = 20;
+        this.boostOnCooldown = true;
+        setTimeout(() => {
+          this.speed = 7;
+        }, 300);
+        setTimeout(() => {
+          this.boostOnCooldown = false;
+        }, 3000);
+      } else {
+        // Failed boost click sound here? 
+      }
+    }
   }
