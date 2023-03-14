@@ -82,7 +82,7 @@ const soundBounce = engine.audio.registerSound('game/audio/score.mp3');
 
 function checkCollisions(player, opponent, ball) {
   // Collision checking player / ball
-  if(player.intersects(ball)) {
+  if(engine.collisions.check(ball, player)) {
     helpers.anglePointingRight(ball.angle) 
         ? ball.x = player.x - ball.radius 
         : ball.x = player.x + player.width + ball.radius;

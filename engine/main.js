@@ -5,6 +5,7 @@ import Messages from "./messages.js";
 import AudioHandler from "./audio.js";
 import GUI from "./gui.js";
 import InputHandler from "./inputHandler.js";
+import Collisions from "./collisions.js";
 export default class GameEngine {
     constructor(config, CONF, TEXTS) {
         this.gamestate = {
@@ -18,6 +19,7 @@ export default class GameEngine {
         this.gui = new GUI(this.gamestate);
         this.canvasVars = this.gui.getCanvasVars();
         this.input = new InputHandler(this.gamestate);
+        this.collisions = new Collisions();
         this.gameUpdateFunction;
         this.gameDrawFunction;
         this.gameOverFunction;

@@ -1,5 +1,6 @@
 export default class Ball {
     constructor(x, y, radius, speed, angleRanges, ctx, audioengine) {
+      this.shape = "circle";
       this.x = x;
       this.y = y;
       this.radius = radius;

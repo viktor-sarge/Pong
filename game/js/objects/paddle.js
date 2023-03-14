@@ -1,5 +1,6 @@
 export default class Paddle {
     constructor(x, y, width, height, color, ctx, id, canvas, alignment, edgePadding) {
+      this.shape = "rectangle";
       this.x = x;
       this.y = y;
       this.width = width;
