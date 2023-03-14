@@ -36,7 +36,15 @@ export default class InputHandler {
                 }
             });
 
+            // Check that gamepad exists
             if (this.gamepads[group.gamepadID]) {
+
+                // Check button mappings
+                Object.entries(group.bindings.gamepad.buttons).forEach(([button, action]) => {
+                    if (this.gamepads[group.gamepadID].buttons[button].pressed) {
+                        group.func[action]();
+                    }
+                });
                 // read state of left analog stick
                 this.stickY = this.gamepads[group.gamepadID].axes[1];
                 // map stick value to paddle movement
