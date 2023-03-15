@@ -18,6 +18,10 @@ export default class Paddle {
       this.alignment = alignment;
       this.edgePadding = edgePadding;
       this.boostOnCooldown = false;
+      this.boostReloadStart = null;
+      this.boostReloadDuration = 3000; // milliseconds
+      this.boostReloadRadius = 7; // pixels
+      this.boostReloadColor = "black";
     }
   
     moveUp() {
@@ -31,6 +35,7 @@ export default class Paddle {
     draw() {
       this.ctx.fillStyle = this.color;
       this.ctx.fillRect(this.x, this.y, this.width, this.height);
+      this.drawBoostReload(this.ctx);
     }
 
     intersects(ball) {
@@ -92,9 +97,32 @@ export default class Paddle {
         }, 300);
         setTimeout(() => {
           this.boostOnCooldown = false;
+          this.boostReloadStart = null
         }, 3000);
       } else {
         // Failed boost click sound here? 
       }
     }
+
+    drawBoostReload() {
+      if (this.boostOnCooldown) {
+        if (this.boostReloadStart === null) {
+          this.boostReloadStart = Date.now();
+        }
+        const elapsedTime = Date.now() - this.boostReloadStart;
+        const progress = Math.min(elapsedTime / this.boostReloadDuration, 1);
+        const centerX = this.x + this.width / 2;
+        const centerY = this.y + this.height / 2;
+        const radius = this.boostReloadRadius - this.boostReloadRadius * progress;
+        
+        this.ctx.save();
+        this.ctx.strokeStyle = this.boostReloadColor;
+        this.ctx.lineWidth = 2;
+        this.ctx.beginPath();
+        this.ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        this.ctx.stroke();
+        this.ctx.restore();
+      }
+    }
+
   }
