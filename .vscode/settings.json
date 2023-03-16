@@ -20,6 +20,7 @@
 		"engine",
 		"paddle",
 		"setup",
-		"gamepads"
+		"gamepads",
+		"ai"
 	]
 }

@@ -1,6 +1,6 @@
 import Rectangle from "../../../engine/objects/rectangle.js";
 export default class Paddle extends Rectangle {
-    constructor(x, y, width, height, color, ctx, id, canvas, alignment, edgePadding) {
+    constructor(x, y, width, height, color, ctx, id, canvas, alignment, edgePadding, audio) {
       super(x, y, width, height);
       this.color = color;
       this.speed = 7;
@@ -19,6 +19,8 @@ export default class Paddle extends Rectangle {
       this.boostReloadDuration = 3000; // milliseconds
       this.boostReloadRadius = 7; // pixels
       this.boostReloadColor = "black";
+      this.audio = audio;
+      this.soundSwoosh = this.audio.registerSound('game/audio/60013__qubodup__whoosh.flac');
     }
   
     moveUp() {
@@ -69,7 +71,7 @@ export default class Paddle extends Rectangle {
 
     boost() {
       if (!this.boostOnCooldown) {
-        // TODO: Play boost swoosh sound? 
+        this.audio.play(this.soundSwoosh);
         this.speed = 20;
         this.boostOnCooldown = true;
         setTimeout(() => {

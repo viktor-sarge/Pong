@@ -43,7 +43,8 @@ const player = new Paddle(
   CONF.PLAYERS[0].IDENTIFIER,
   canvasVars.canvas,
   "left",
-  CONF.PADDLE.DIST_FROM_EDGE
+  CONF.PADDLE.DIST_FROM_EDGE,
+  engine.audio
 );
 
 const player2 = new Paddle(
@@ -56,7 +57,8 @@ const player2 = new Paddle(
   CONF.PLAYERS[1].IDENTIFIER,
   canvasVars.canvas,
   "right",
-  CONF.PADDLE.DIST_FROM_EDGE
+  CONF.PADDLE.DIST_FROM_EDGE,
+  engine.audio
 );
 
 const opponent = new OpponentAI(ball, player2);
