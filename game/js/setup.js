@@ -8,6 +8,7 @@ import CountdownHandler from "./objects/countdown.js";
 import GameEngine from '../../engine/main.js';
 import TEXTS from '../data/strings.json' assert {type: 'json'};
 import * as helpers from './helpers/helperFunctions.js';
+import OpponentAI from "./objects/opponentAI.js";
 
 /* Game engine instantiation */
 const engine = new GameEngine(CONF, TEXTS);
@@ -58,6 +59,8 @@ const player2 = new Paddle(
   CONF.PADDLE.DIST_FROM_EDGE
 );
 
+const opponent = new OpponentAI(ball, player2);
+
 const net = new Net(CONF.GAME.BASE_COLOR, canvasVars.ctx);
 
 /* Window resize / game specific */
@@ -102,15 +105,16 @@ function checkCollisions(player, opponent, ball) {
 function update() {
   ball.update(canvasVars.canvasWidth, canvasVars.canvasHeight);
   engine.input.update()
+  if(!engine.gamestate.multiplayer) opponent.update();
   checkCollisions(player, player2, ball);
-  if(engine.gamestate.multiplayer) checkCollisions(player2, player, ball);
+  checkCollisions(player2, player, ball);
 }
 
 function draw() {
   net.draw(canvasVars.canvasWidth, canvasVars.canvasHeight);
   ball.draw(canvasVars.canvasWidth);
   player.draw();
-  if(engine.gamestate.multiplayer) player2.draw();
+  player2.draw();
   scorecounter.draw(canvasVars.ctx, canvasVars.canvas);
   bouncecounter.draw(canvasVars.ctx, canvasVars.canvasCenterX, canvasVars.canvasCenterY);
 }
