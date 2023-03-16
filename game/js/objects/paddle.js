@@ -1,10 +1,7 @@
-export default class Paddle {
+import Rectangle from "../../../engine/objects/rectangle.js";
+export default class Paddle extends Rectangle {
     constructor(x, y, width, height, color, ctx, id, canvas, alignment, edgePadding) {
-      this.shape = "rectangle";
-      this.x = x;
-      this.y = y;
-      this.width = width;
-      this.height = height;
+      super(x, y, width, height);
       this.color = color;
       this.speed = 7;
       this.rescaleStep = 10;

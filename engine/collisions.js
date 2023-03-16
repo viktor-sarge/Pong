@@ -1,4 +1,5 @@
 export default class Collisions {
+    // The shape string is hardcoded in a subclass that objects extends.
     check(a,b) {
         if(a.shape === b.shape) {
             if(a.shape === "rectangle") {

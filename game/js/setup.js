@@ -10,7 +10,7 @@ import TEXTS from '../data/strings.json' assert {type: 'json'};
 import * as helpers from './helpers/helperFunctions.js';
 
 /* Game engine instantiation */
-const engine = new GameEngine({}, CONF, TEXTS);
+const engine = new GameEngine(CONF, TEXTS);
 const canvasVars = engine.gui.getCanvasVars();
 
 /* Game specific classes initialized here */ 

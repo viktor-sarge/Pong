@@ -1,9 +1,8 @@
-export default class Ball {
+import Circle from "../../../engine/objects/circle.js";
+
+export default class Ball extends Circle {
     constructor(x, y, radius, speed, angleRanges, ctx, audioengine) {
-      this.shape = "circle";
-      this.x = x;
-      this.y = y;
-      this.radius = radius;
+      super(x,y, radius);
       this.speed = speed;
       this.angleRanges = angleRanges;
       this.angle = this.getRandomAngle();

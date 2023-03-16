@@ -1,13 +1,10 @@
-// TODO: Move code here to set up game loop
-// Should have a method to switch to provided mode 
-// Modes and their respective update/draw functions should be provided to constructor
 import Messages from "./messages.js";
 import AudioHandler from "./audio.js";
 import GUI from "./gui.js";
 import InputHandler from "./inputHandler.js";
 import Collisions from "./collisions.js";
 export default class GameEngine {
-    constructor(config, CONF, TEXTS) {
+    constructor(CONF, TEXTS) {
         this.gamestate = {
             multiplayer: false,
             paused: false,
@@ -66,9 +63,5 @@ export default class GameEngine {
     draw() {
         this.canvasVars.ctx.clearRect(0, 0, this.canvasVars.canvasWidth, this.canvasVars.canvasHeight);
         this.gameDrawFunction();
-    }
-
-    setGameMode(mode) {
-
     }
 }
