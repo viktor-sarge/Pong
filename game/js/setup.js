@@ -61,7 +61,7 @@ const player2 = new Paddle(
   engine.audio
 );
 
-const opponent = new OpponentAI(ball, player2);
+const opponent = new OpponentAI(ball, player2, canvasVars.canvas);
 
 const net = new Net(CONF.GAME.BASE_COLOR, canvasVars.ctx);
 
