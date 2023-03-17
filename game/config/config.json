@@ -23,7 +23,8 @@
 		"MATCH_LENGTH_IN_BOUNCES": 21
 	},
 	"BOUNCEMETER": {
-		"RADIUS": 150
+		"RADIUS": 150,
+		"COLOR": "red"
 	},
 	"GAMEPAD": {
 		"INPUT_THRESHOLD": 0.5

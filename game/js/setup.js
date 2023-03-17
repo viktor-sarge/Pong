@@ -20,7 +20,7 @@ const scorecounter = new scoreboard();
 const bouncecounter = new bouncemeter({
   bounces: CONF.GAME.MATCH_LENGTH_IN_BOUNCES,
   radius: CONF.BOUNCEMETER.RADIUS,
-  color: CONF.GAME.BASE_COLOR
+  color: CONF.BOUNCEMETER.COLOR
 });
 
 const ball = new Ball(
