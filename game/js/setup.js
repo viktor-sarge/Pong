@@ -30,7 +30,9 @@ const ball = new Ball(
   CONF.BALL.SPEED, 
   CONF.BALL.ANGLE_RANGES,
   canvasVars.ctx,
-  engine.audio
+  canvasVars.canvas,
+  engine.audio,
+  engine.physics
 );
 
 const player = new Paddle(
@@ -79,7 +81,7 @@ function resetGame() {
   player2.reset();
   scorecounter.reset();
   bouncecounter.reset();
-  ball.serve(canvasVars.canvas);
+  ball.serve();
 }
 const countdown = new CountdownHandler(CONF, canvasVars.ctx, canvasVars.canvas, resetGame, engine.audio, engine.messages);
 
@@ -92,6 +94,7 @@ function checkCollisions(player, opponent, ball) {
         ? ball.x = player.x - ball.radius 
         : ball.x = player.x + player.width + ball.radius;
     ball.switchDirection();
+    ball.accelerate();
     scorecounter.score(player.id);
     player.shrink();
     opponent.grow();
@@ -106,6 +109,15 @@ function checkCollisions(player, opponent, ball) {
 
 function update() {
   ball.update(canvasVars.canvasWidth, canvasVars.canvasHeight);
+  if(ball.getSpeed() === 0) {
+    if(ball.getSide() === 'left') {
+      scorecounter.doublePoints('p2');
+      ball.serve();
+    } else {
+      scorecounter.doublePoints('p1');
+      ball.serve();
+    }
+  }
   engine.input.update()
   if(!engine.gamestate.multiplayer) opponent.update();
   checkCollisions(player, player2, ball);

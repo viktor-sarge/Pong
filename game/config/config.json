@@ -7,7 +7,7 @@
 			[5.7, 6.0]
 		],
 		"RADIUS": 10,
-		"SPEED": 17
+		"SPEED": 23
 	},
 	"PADDLE": {
 		"WIDTH": 20,
@@ -36,5 +36,8 @@
 			"ALIGN": "center"
 		}
 	},
-	"PLAYERS": [{ "IDENTIFIER": "p1" }, { "IDENTIFIER": "p2" }]
+	"PLAYERS": [{ "IDENTIFIER": "p1" }, { "IDENTIFIER": "p2" }],
+	"PHYSICS": {
+		"FRICTION": 0.02
+	}
 }

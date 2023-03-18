@@ -1,61 +1,45 @@
 import Circle from "../../../engine/objects/circle.js";
 
 export default class Ball extends Circle {
-    constructor(x, y, radius, speed, angleRanges, ctx, audioengine) {
+    constructor(x, y, radius, speed, angleRanges, ctx, canvas, audioengine, physics) {
       super(x,y, radius);
       this.speed = speed;
+      this.originalSpeed = speed;
       this.angleRanges = angleRanges;
       this.angle = this.getRandomAngle();
       this.ctx = ctx;
+      this.canvas = canvas;
       this.audio = audioengine;
       this.soundBounce = this.audio.registerSound('/game/audio/523088__magnuswaker__energy-bounce-1.wav');
+      this.physics = physics;
     }
 
     update(canvasWidth, canvasHeight) {
       // Move the ball based on its speed and angle
       this.x += this.speed * Math.cos(this.angle);
       this.y += this.speed * Math.sin(this.angle);
+      this.speed = this.physics.applyFriction(this.speed);
   
       // Check if the ball collides with the canvas boundaries
       if (this.x - this.radius < 0) {
         this.x = this.radius;
         this.angle = Math.PI - this.angle;
-        if(this.audio.playing(this.soundBounce)) {
-          this.audio.stop(this.soundBounce); 
-          this.audio.play(this.soundBounce);
-        } else {
-          this.audio.play(this.soundBounce);
-        }
+        this.playBounce();
       }
       if (this.x + this.radius > canvasWidth) {
         this.x = canvasWidth - this.radius;
         this.angle = Math.PI - this.angle;
-        if(this.audio.playing(this.soundBounce)) {
-          this.audio.stop(this.soundBounce); 
-          this.audio.play(this.soundBounce);
-        } else {
-          this.audio.play(this.soundBounce);
-        }
+        this.playBounce();
       }
       if (this.y - this.radius < 0) {
         this.y = this.radius;
         this.angle = -this.angle;
-        if(this.audio.playing(this.soundBounce)) {
-          this.audio.stop(this.soundBounce); 
-          this.audio.play(this.soundBounce);
-        } else {
-          this.audio.play(this.soundBounce);
-        }
+        this.playBounce();
       }
       if (this.y + this.radius > canvasHeight) {
         this.y = canvasHeight - this.radius;
         this.angle = -this.angle;
-        if(this.audio.playing(this.soundBounce)) {
-          this.audio.stop(this.soundBounce); 
-          this.audio.play(this.soundBounce);
-        } else {
-          this.audio.play(this.soundBounce);
-        }
+        this.playBounce();
       }
     }
   
@@ -84,9 +68,23 @@ export default class Ball extends Circle {
       this.ctx.restore();
     }
 
-    serve(canvas) {
-      this.x = canvas.width / 2;
-      this.y = canvas.height / 2;
+    playBounce() {
+      if(this.audio.playing(this.soundBounce)) {
+        this.audio.stop(this.soundBounce); 
+        this.audio.play(this.soundBounce);
+      } else {
+        this.audio.play(this.soundBounce);
+      }
+    }
+    
+    accelerate() {
+      this.speed = this.originalSpeed;
+    }
+
+    serve() {
+      this.x = this.canvas.width / 2;
+      this.y = this.canvas.height / 2;
+      this.speed = this.originalSpeed;
       this.angle = this.getRandomAngle();
     }
 
@@ -101,6 +99,14 @@ export default class Ball extends Circle {
 
     switchDirection() {
       this.angle = Math.PI - this.angle;
+    }
+
+    getSpeed() {
+      return this.speed;
+    }
+
+    getSide() {
+      return this.x < this.canvas.width / 2 ? "left" : "right";
     }
   }
 

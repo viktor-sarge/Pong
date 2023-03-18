@@ -3,6 +3,7 @@ import AudioHandler from "./audio.js";
 import GUI from "./gui.js";
 import InputHandler from "./inputHandler.js";
 import Collisions from "./collisions.js";
+import Physics from "./physics.js";
 export default class GameEngine {
     constructor(CONF, TEXTS) {
         this.gamestate = {
@@ -17,6 +18,7 @@ export default class GameEngine {
         this.canvasVars = this.gui.getCanvasVars();
         this.input = new InputHandler(this.gamestate);
         this.collisions = new Collisions();
+        this.physics = new Physics(CONF.PHYSICS.FRICTION);
         this.gameUpdateFunction;
         this.gameDrawFunction;
         this.gameOverFunction;

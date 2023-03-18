@@ -24,4 +24,8 @@ export default class scoreboard {
         if(this.scores.p1 > this.scores.p2) { return 'p1' }
         else {return 'p2'}
     }
+
+    doublePoints(key) {
+        this.scores[key] = this.scores[key] * 2;
+    }
 }
