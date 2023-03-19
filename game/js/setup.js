@@ -46,7 +46,8 @@ const player = new Paddle(
   canvasVars.canvas,
   "left",
   CONF.PADDLE.DIST_FROM_EDGE,
-  engine.audio
+  engine.audio,
+  engine.particles
 );
 
 const player2 = new Paddle(
@@ -60,7 +61,8 @@ const player2 = new Paddle(
   canvasVars.canvas,
   "right",
   CONF.PADDLE.DIST_FROM_EDGE,
-  engine.audio
+  engine.audio,
+  engine.particles
 );
 
 const opponent = new OpponentAI(ball, player2, canvasVars.canvas);
@@ -85,7 +87,7 @@ function resetGame() {
 }
 const countdown = new CountdownHandler(CONF, canvasVars.ctx, canvasVars.canvas, resetGame, engine.audio, engine.messages);
 
-const soundBounce = engine.audio.registerSound('game/audio/score.mp3');
+const soundBounce = engine.audio.registerSound('/game/audio/523088__magnuswaker__energy-bounce-1.wav');
 
 function checkCollisions(player, opponent, ball) {
   // Collision checking player / ball

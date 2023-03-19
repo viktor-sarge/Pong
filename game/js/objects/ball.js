@@ -10,7 +10,7 @@ export default class Ball extends Circle {
       this.ctx = ctx;
       this.canvas = canvas;
       this.audio = audioengine;
-      this.soundBounce = this.audio.registerSound('/game/audio/523088__magnuswaker__energy-bounce-1.wav');
+      this.soundBounce = this.audio.registerSound('/game/audio/score.mp3');
       this.physics = physics;
     }
 
