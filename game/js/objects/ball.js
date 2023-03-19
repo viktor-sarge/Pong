@@ -24,22 +24,22 @@ export default class Ball extends Circle {
       if (this.x - this.radius < 0) {
         this.x = this.radius;
         this.angle = Math.PI - this.angle;
-        this.playBounce();
+        this.audio.play(this.soundBounce);
       }
       if (this.x + this.radius > canvasWidth) {
         this.x = canvasWidth - this.radius;
         this.angle = Math.PI - this.angle;
-        this.playBounce();
+        this.audio.play(this.soundBounce);
       }
       if (this.y - this.radius < 0) {
         this.y = this.radius;
         this.angle = -this.angle;
-        this.playBounce();
+        this.audio.play(this.soundBounce);
       }
       if (this.y + this.radius > canvasHeight) {
         this.y = canvasHeight - this.radius;
         this.angle = -this.angle;
-        this.playBounce();
+        this.audio.play(this.soundBounce);
       }
     }
   
@@ -69,6 +69,7 @@ export default class Ball extends Circle {
     }
 
     playBounce() {
+      // Restarts the sound. Useful when playing longer/louder bounce sounds
       if(this.audio.playing(this.soundBounce)) {
         this.audio.stop(this.soundBounce); 
         this.audio.play(this.soundBounce);
