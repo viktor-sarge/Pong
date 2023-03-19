@@ -21,6 +21,8 @@
 		"paddle",
 		"setup",
 		"gamepads",
-		"ai"
+		"ai",
+		"particles",
+		"documentation"
 	]
 }

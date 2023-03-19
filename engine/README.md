@@ -2,10 +2,15 @@
 
 # engine
 
+Use the engine by importing it into your game with `import GameEngine from '../../engine/main.js';` then you can start it with `const engine = new GameEngine(CONF, TEXTS);` where CONF and TEXTS are formatted as in the Pong example.
+After that you can use the different systems by calling the with `engine.thingYouWantToUse` like `const canvasVars = engine.gui.getCanvasVars();`. You need to pass the engine your own update, draw functions etc. Check the setup.js of Pong to see how.
+
 <!-- optional markdown-notes-tree directory description starts here -->
 
-Reusable abstractions for audio, input, GUI, messages, and gameloop.
+Reusable abstractions for audio, input, collisions, physics, particles, GUI, messages, and gameloop.
 
 <!-- optional markdown-notes-tree directory description ends here -->
 
-
+-   [**objects**](objects) - Making collision detection easy by offering two standard objects: circle and rectangle. Each with relevant variables and both extend baseEntity.js that keeps coordinates.
+-   [**particles**](particles) - The particle system. Allow you to add particle emitters via the engine.
+    -   [**classes**](particles/classes) - A basic particle emitter using the particle class.
