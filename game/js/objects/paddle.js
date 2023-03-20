@@ -73,7 +73,7 @@ export default class Paddle extends Rectangle {
     boost() {
       if (!this.boostOnCooldown) {
         this.audio.play(this.soundSwoosh);
-        this.particles.addEmitter(this.x, this.y, 150, 300, 0.2, "slategray", 10);
+        this.particles.addEmitter(this.x, this.y, 150, 300, 0.2, "slategray", 3);
         this.speed = 20;
         this.boostOnCooldown = true;
         setTimeout(() => {

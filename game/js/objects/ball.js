@@ -1,7 +1,7 @@
 import Circle from "../../../engine/objects/circle.js";
 
 export default class Ball extends Circle {
-    constructor(x, y, radius, speed, angleRanges, ctx, canvas, audioengine, physics) {
+    constructor(x, y, radius, speed, angleRanges, ctx, canvas, audioengine, physics, particles) {
       super(x,y, radius);
       this.speed = speed;
       this.originalSpeed = speed;
@@ -12,6 +12,7 @@ export default class Ball extends Circle {
       this.audio = audioengine;
       this.soundBounce = this.audio.registerSound('/game/audio/score.mp3');
       this.physics = physics;
+      this.particles = particles;
     }
 
     update(canvasWidth, canvasHeight) {
@@ -87,6 +88,7 @@ export default class Ball extends Circle {
       this.y = this.canvas.height / 2;
       this.speed = this.originalSpeed;
       this.angle = this.getRandomAngle();
+      this.particles.addEmitter(this.x, this.y, 250, 200, 0.3, "gray", 5);
     }
 
     getRandomAngle() {

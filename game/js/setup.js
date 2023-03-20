@@ -32,7 +32,8 @@ const ball = new Ball(
   canvasVars.ctx,
   canvasVars.canvas,
   engine.audio,
-  engine.physics
+  engine.physics,
+  engine.particles
 );
 
 const player = new Paddle(
