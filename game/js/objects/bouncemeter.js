@@ -1,22 +1,29 @@
 export default class bouncemeter {
-    constructor({bounces, radius, color}) {
+    constructor({bounces, radius, color, canvas}) {
         this.standardBouncesAmount = bounces;
         this.bounces = bounces;
         this.radius = radius;
         this.color = color;
+        this.canvas = canvas;
+        this.startX = this.canvas.width/8 * 3;
+        this.startY = 50;
+        this.spacing = (this.canvas.width/4) / bounces;
     }
 
-    draw(ctx, canvasCenterX, canvasCenterY) {
+    draw(ctx) {
 
-        ctx.fillStyle = this.color;
-        for (let i = 0; i < this.bounces; i++) {
-            const angle = i * (Math.PI * 2 / this.bounces);
-            const x = canvasCenterX + this.radius * Math.cos(angle);
-            const y = canvasCenterY + this.radius * Math.sin(angle);
+        let x = this.startX;
+        for (let i = 0; i < this.standardBouncesAmount; i++) {
+            if(i < this.bounces) {
+                ctx.fillStyle = this.color;
+            } else {
+                ctx.fillStyle = "black";
+            }
             ctx.beginPath();
-            ctx.arc(x, y, 3, 0, Math.PI * 2);
+            ctx.arc(x, this.startY, 2, 0, Math.PI * 2);
             ctx.closePath();
             ctx.fill();
+            x = x + this.spacing;
         }
     }
 

@@ -20,7 +20,8 @@ const scorecounter = new scoreboard();
 const bouncecounter = new bouncemeter({
   bounces: CONF.GAME.MATCH_LENGTH_IN_BOUNCES,
   radius: CONF.BOUNCEMETER.RADIUS,
-  color: CONF.BOUNCEMETER.COLOR
+  color: CONF.BOUNCEMETER.COLOR,
+  canvas: canvasVars.canvas
 });
 
 const ball = new Ball(
@@ -133,7 +134,7 @@ function draw() {
   player.draw();
   player2.draw();
   scorecounter.draw(canvasVars.ctx, canvasVars.canvas);
-  bouncecounter.draw(canvasVars.ctx, canvasVars.canvasCenterX, canvasVars.canvasCenterY);
+  bouncecounter.draw(canvasVars.ctx);
 }
 
 function declareWinner() {
