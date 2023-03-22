@@ -23,6 +23,7 @@
 		"gamepads",
 		"ai",
 		"particles",
-		"documentation"
+		"documentation",
+		"graphics"
 	]
 }

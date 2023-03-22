@@ -15,7 +15,7 @@ const engine = new GameEngine(CONF, TEXTS);
 const canvasVars = engine.gui.getCanvasVars();
 
 /* Game specific classes initialized here */ 
-const scorecounter = new scoreboard();
+const scorecounter = new scoreboard(engine.storage);
 
 const bouncecounter = new bouncemeter({
   bounces: CONF.GAME.MATCH_LENGTH_IN_BOUNCES,
@@ -139,12 +139,19 @@ function draw() {
 
 function declareWinner() {
   let message;
-  if(scorecounter.winner() === 'p1') {
+  const winData = scorecounter.winner();
+
+  if(winData.winner === 'p1') {
     const randomIndex = Math.floor(Math.random() * TEXTS.WINNER.P1.length);
     message = TEXTS.WINNER.P1[randomIndex];
+
   } else {
     const randomIndex = Math.floor(Math.random() * TEXTS.WINNER.P2.length);
     message = TEXTS.WINNER.P2[randomIndex];
+  }
+
+  if(winData.newHighscore) {
+    message = `New Highscore by ${winData.winner}`;
   }
   engine.messages.write(CONF.TEXT_SETTINGS.BIG, message, canvasVars.ctx, canvasVars.canvas);
   engine.gamestate.running = false;

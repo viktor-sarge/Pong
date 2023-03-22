@@ -5,6 +5,7 @@ import InputHandler from "./inputHandler.js";
 import Collisions from "./collisions.js";
 import Physics from "./physics.js";
 import ParticleSystem from "./particles/particles.js";
+import Datastorage from "./storage/datastorage.js";
 export default class GameEngine {
     constructor(CONF, TEXTS) {
         this.gamestate = {
@@ -21,6 +22,7 @@ export default class GameEngine {
         this.collisions = new Collisions();
         this.physics = new Physics(CONF.PHYSICS.FRICTION);
         this.particles = new ParticleSystem(this.canvasVars.ctx);
+        this.storage = new Datastorage();
         this.gameUpdateFunction;
         this.gameDrawFunction;
         this.gameOverFunction;

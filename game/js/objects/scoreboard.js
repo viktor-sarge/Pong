@@ -1,6 +1,7 @@
 export default class scoreboard {
-    constructor() {
-        this.scores = {p1:0, p2: 0}
+    constructor(storage) {
+        this.scores = {p1:0, p2: 0};
+        this.storage = storage;
     }
 
     draw(ctx, canvas) {
@@ -21,8 +22,32 @@ export default class scoreboard {
     }
 
     winner() {
-        if(this.scores.p1 > this.scores.p2) { return 'p1' }
-        else {return 'p2'}
+        debugger;
+        let data = {};
+        let previousHighscore = this.storage.get("highscore");
+        if (!previousHighscore) previousHighscore = 0;
+        if(this.scores.p1 > this.scores.p2) { 
+            data['winner'] = 'p1';
+            if (this.scores.p1 > previousHighscore) {
+                data['newHighscore'] = true;
+                this.storage.put("highscore", this.scores.p1);
+            } else {
+                data['newHighscore'] = false;
+            } 
+            data['score'] = this.scores.p1;
+        }
+        else {
+            data['winner'] = 'p2';
+            if (this.scores.p2 > previousHighscore) {
+                data['newHighscore'] = true;
+                this.storage.put("highscore", this.scores.p2);
+            } else {
+                data['newHighscore'] = false;
+            } 
+            data['score'] = this.scores.p2;
+        }
+        console.log(data);
+        return data;
     }
 
     doublePoints(key) {
