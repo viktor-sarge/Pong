@@ -17,7 +17,7 @@ export default class bouncemeter {
             if(i < this.bounces) {
                 ctx.fillStyle = this.color;
             } else {
-                ctx.fillStyle = "black";
+                ctx.fillStyle = "lightgray";
             }
             ctx.beginPath();
             ctx.arc(x, this.startY, 2, 0, Math.PI * 2);
