@@ -22,7 +22,6 @@ export default class scoreboard {
     }
 
     winner() {
-        debugger;
         let data = {};
         let previousHighscore = this.storage.get("highscore");
         if (!previousHighscore) previousHighscore = 0;

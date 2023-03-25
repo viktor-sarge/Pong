@@ -1,6 +1,6 @@
 export default class Datastorage {
     get(key) {
-        localStorage.getItem(key);
+        return localStorage.getItem(key);
     }
 
     put(key, value) {
