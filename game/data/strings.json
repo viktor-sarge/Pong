@@ -1,20 +1,21 @@
 {
-	"FEEDBACK": {
-		"POSITIVE": "NICE WORK!",
-		"NEGATIVE": "SORRY ABOUT THAT"
-	},
 	"WINNER": {
 		"P1": [
 			"Player 1 wins!",
 			"Glory to p1",
 			"Player 1 strikes again",
-			"It's a good day to be P1"
+			"It's a good day to be P1",
+			"Victory tastes sweet for P1",
+			"Player 1 reigns supreme!",
+			"P1 proves who's boss"
 		],
 		"P2": [
 			"Player 2 wins!",
 			"It takes two to tango, but only P2 wins",
 			"Victory for P2",
-			"All your bases belong to P2"
+			"All your bases belong to P2",
+			"P2 FTW!",
+			"P2 is number one"
 		]
 	},
 	"STATES": {
