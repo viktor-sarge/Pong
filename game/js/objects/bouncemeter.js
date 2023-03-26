@@ -27,6 +27,11 @@ export default class bouncemeter {
         }
     }
 
+    reposition() {
+        this.startX = this.canvas.width/8 * 3;
+        this.spacing = (this.canvas.width/4) / this.standardBouncesAmount;
+    }
+
     remaining() {
         return this.bounces;
     }

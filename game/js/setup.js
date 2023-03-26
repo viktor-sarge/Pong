@@ -74,6 +74,7 @@ const net = new Net(CONF.GAME.BASE_COLOR, canvasVars.ctx);
 /* Window resize / game specific */
 function resize() {
   player2.realign(canvasVars.canvasWidth-CONF.PADDLE.WIDTH-CONF.PADDLE.DIST_FROM_EDGE);
+  bouncecounter.reposition();
 }
 
 /* Countdown and reset / game specific / GUI */

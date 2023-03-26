@@ -25,6 +25,7 @@
 		"particles",
 		"documentation",
 		"graphics",
-		"highscore"
+		"highscore",
+		"storage"
 	]
 }
