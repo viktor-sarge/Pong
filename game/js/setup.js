@@ -123,7 +123,7 @@ function update() {
       ball.serve();
     }
   }
-  engine.input.update()
+  engine.input.update();
   if(!engine.gamestate.multiplayer) opponent.update();
   checkCollisions(player, player2, ball);
   checkCollisions(player2, player, ball);
