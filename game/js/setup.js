@@ -1,5 +1,5 @@
-import scoreboard from "./objects/scoreboard.js";
-import bouncemeter from "./objects/bouncemeter.js";
+import Scoreboard from "./objects/scoreboard.js";
+import BounceMeter from "./objects/bouncemeter.js";
 import Ball from "./objects/ball.js";
 import Paddle from "./objects/paddle.js";
 import CONF from '../config/config.json' with {type: 'json'};
@@ -15,9 +15,9 @@ const engine = new GameEngine(CONF, TEXTS);
 const canvasVars = engine.gui.getCanvasVars();
 
 /* Game specific classes initialized here */ 
-const scorecounter = new scoreboard(engine.storage);
+const scorecounter = new Scoreboard(engine.storage, CONF);
 
-const bouncecounter = new bouncemeter({
+const bouncecounter = new BounceMeter({
   bounces: CONF.GAME.MATCH_LENGTH_IN_BOUNCES,
   radius: CONF.BOUNCEMETER.RADIUS,
   color: CONF.BOUNCEMETER.COLOR,
@@ -34,7 +34,8 @@ const ball = new Ball(
   canvasVars.canvas,
   engine.audio,
   engine.physics,
-  engine.particles
+  engine.particles,
+  CONF
 );
 
 const player = new Paddle(
@@ -49,7 +50,8 @@ const player = new Paddle(
   "left",
   CONF.PADDLE.DIST_FROM_EDGE,
   engine.audio,
-  engine.particles
+  engine.particles,
+  CONF
 );
 
 const player2 = new Paddle(
@@ -64,7 +66,8 @@ const player2 = new Paddle(
   "right",
   CONF.PADDLE.DIST_FROM_EDGE,
   engine.audio,
-  engine.particles
+  engine.particles,
+  CONF
 );
 
 const opponent = new OpponentAI(ball, player2, canvasVars.canvas);

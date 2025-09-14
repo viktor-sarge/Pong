@@ -1,7 +1,14 @@
 // An abstraction layer on top of Howler
 // Should Howler ever need replacing it's nice to have a single place to refactor
 
+/**
+ * Audio handler class that provides an abstraction layer over Howler.js.
+ * Handles audio loading, playback, and error management with graceful fallbacks.
+ */
 export default class AudioHandler {
+	/**
+	 * Creates a new AudioHandler instance and checks for audio availability.
+	 */
 	constructor() {
 		this.sounds = [];
 		this.audioAvailable = this.checkAudioAvailability();

@@ -1,11 +1,32 @@
 import Rectangle from "../../../engine/objects/rectangle.js";
+
+/**
+ * Paddle class representing a player-controlled paddle with movement, boost abilities,
+ * and dynamic resizing. Extends the Rectangle base class.
+ */
 export default class Paddle extends Rectangle {
-    constructor(x, y, width, height, color, ctx, id, canvas, alignment, edgePadding, audio, particles) {
+    /**
+     * Creates a new Paddle instance.
+     * @param {number} x - Initial X position
+     * @param {number} y - Initial Y position
+     * @param {number} width - Paddle width
+     * @param {number} height - Paddle height
+     * @param {string} color - Paddle color
+     * @param {CanvasRenderingContext2D} ctx - Canvas rendering context
+     * @param {string} id - Player identifier
+     * @param {HTMLCanvasElement} canvas - Canvas element
+     * @param {string} alignment - Paddle alignment ('left' or 'right')
+     * @param {number} edgePadding - Distance from canvas edge
+     * @param {AudioHandler} audio - Audio system reference
+     * @param {ParticleSystem} particles - Particle system reference
+     * @param {Object} config - Game configuration object
+     */
+    constructor(x, y, width, height, color, ctx, id, canvas, alignment, edgePadding, audio, particles, config) {
       super(x, y, width, height);
       this.color = color;
-      this.speed = 7;
-      this.rescaleStep = 10;
-      this.minHeight = 40;
+      this.speed = config.PADDLE.BASE_SPEED;
+      this.rescaleStep = config.PADDLE.RESCALE_STEP;
+      this.minHeight = config.PADDLE.MIN_HEIGHT;
       this.ctx = ctx
       this.originalHeight = height;
       this.originalX = x;
@@ -16,12 +37,13 @@ export default class Paddle extends Rectangle {
       this.edgePadding = edgePadding;
       this.boostOnCooldown = false;
       this.boostReloadStart = null;
-      this.boostReloadDuration = 3000; // milliseconds
-      this.boostReloadRadius = 7; // pixels
-      this.boostReloadColor = "black";
+      this.boostReloadDuration = config.PADDLE.BOOST_COOLDOWN_MS;
+      this.boostReloadRadius = config.PADDLE.BOOST_RELOAD_RADIUS;
+      this.boostReloadColor = config.PADDLE.BOOST_RELOAD_COLOR;
       this.audio = audio;
       this.particles = particles;
       this.soundSwoosh = this.audio.registerSound('game/audio/60013__qubodup__whoosh.flac');
+      this.config = config;
     }
   
     moveUp() {
@@ -73,16 +95,24 @@ export default class Paddle extends Rectangle {
     boost() {
       if (!this.boostOnCooldown) {
         this.audio.play(this.soundSwoosh);
-        this.particles.addEmitter(this.x, this.y, 150, 300, 0.2, "slategray", 3);
-        this.speed = 20;
+        this.particles.addEmitter(
+          this.x, 
+          this.y, 
+          this.config.PADDLE.BOOST_PARTICLE_SPEED, 
+          this.config.PADDLE.BOOST_PARTICLE_SPEED_VARIANCE, 
+          this.config.PADDLE.BOOST_PARTICLE_LIFESPAN, 
+          this.config.PADDLE.BOOST_PARTICLE_COLOR, 
+          this.config.PADDLE.BOOST_PARTICLE_COUNT
+        );
+        this.speed = this.config.PADDLE.BOOST_SPEED;
         this.boostOnCooldown = true;
         setTimeout(() => {
-          this.speed = 7;
-        }, 300);
+          this.speed = this.config.PADDLE.BASE_SPEED;
+        }, this.config.PADDLE.BOOST_DURATION_MS);
         setTimeout(() => {
           this.boostOnCooldown = false;
           this.boostReloadStart = null
-        }, 3000);
+        }, this.config.PADDLE.BOOST_COOLDOWN_MS);
       } else {
         // Failed boost click sound here? 
       }
@@ -101,7 +131,7 @@ export default class Paddle extends Rectangle {
         
         this.ctx.save();
         this.ctx.strokeStyle = this.boostReloadColor;
-        this.ctx.lineWidth = 2;
+        this.ctx.lineWidth = this.config.PADDLE.BOOST_RELOAD_LINE_WIDTH;
         this.ctx.beginPath();
         this.ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
         this.ctx.stroke();

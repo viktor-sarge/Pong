@@ -1,7 +1,25 @@
 import Circle from "../../../engine/objects/circle.js";
 
+/**
+ * Ball class representing the game ball with physics, rendering, and collision detection.
+ * Extends the Circle base class and handles movement, bouncing, acceleration, and visual effects.
+ */
 export default class Ball extends Circle {
-    constructor(x, y, radius, speed, angleRanges, ctx, canvas, audioengine, physics, particles) {
+    /**
+     * Creates a new Ball instance.
+     * @param {number} x - Initial X position
+     * @param {number} y - Initial Y position 
+     * @param {number} radius - Ball radius
+     * @param {number} speed - Initial movement speed
+     * @param {Array<Array<number>>} angleRanges - Valid angle ranges for serving
+     * @param {CanvasRenderingContext2D} ctx - Canvas rendering context
+     * @param {HTMLCanvasElement} canvas - Canvas element
+     * @param {AudioHandler} audioengine - Audio system reference
+     * @param {Physics} physics - Physics system reference
+     * @param {ParticleSystem} particles - Particle system reference
+     * @param {Object} config - Game configuration object
+     */
+    constructor(x, y, radius, speed, angleRanges, ctx, canvas, audioengine, physics, particles, config) {
       super(x,y, radius);
       this.speed = speed;
       this.originalSpeed = speed;
@@ -13,6 +31,7 @@ export default class Ball extends Circle {
       this.soundBounce = this.audio.registerSound('/game/audio/score.mp3');
       this.physics = physics;
       this.particles = particles;
+      this.config = config;
     }
 
     update(canvasWidth, canvasHeight) {
@@ -48,13 +67,13 @@ export default class Ball extends Circle {
 
       // Set the shadow color, offset, and blur
       this.ctx.shadowColor = 'lightgray';
-      this.ctx.shadowBlur = 25;
+      this.ctx.shadowBlur = this.config.BALL.SHADOW_BLUR;
 
       // Calculate the distance between the ball and the center of the screen
       const distanceFromCenter = canvasWidth / 2 - Math.abs(this.x - canvasWidth / 2);
 
       // Calculate the offset of the shadow based on the distance from the center
-      const shadowOffset = Math.max(10, (distanceFromCenter / 5));
+      const shadowOffset = Math.max(this.config.BALL.SHADOW_MIN_OFFSET, (distanceFromCenter / this.config.BALL.SHADOW_DIVISOR));
 
       this.ctx.save()
       // Set the shadow offset based on the distance from the center
@@ -88,7 +107,15 @@ export default class Ball extends Circle {
       this.y = this.canvas.height / 2;
       this.speed = this.originalSpeed;
       this.angle = this.getRandomAngle();
-      this.particles.addEmitter(this.x, this.y, 250, 200, 0.3, "gray", 5);
+      this.particles.addEmitter(
+        this.x, 
+        this.y, 
+        this.config.BALL.PARTICLE_SPEED, 
+        this.config.BALL.PARTICLE_SPEED_VARIANCE, 
+        this.config.BALL.PARTICLE_LIFESPAN, 
+        "gray", 
+        this.config.BALL.PARTICLE_COUNT
+      );
     }
 
     getRandomAngle() {

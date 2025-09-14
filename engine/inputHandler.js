@@ -1,4 +1,13 @@
+/**
+ * Input handler class that manages keyboard and gamepad input for the game.
+ * Supports multiple input devices, key bindings, and provides a unified interface
+ * for game objects to receive input events.
+ */
 export default class InputHandler {
+	/**
+	 * Creates a new InputHandler instance.
+	 * @param {Object} gameState - Reference to the game state object
+	 */
 	constructor(gameState) {
 		this.keys = {};
 		this.gameState = gameState;

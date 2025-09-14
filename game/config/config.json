@@ -7,12 +7,33 @@
 			[5.7, 6.0]
 		],
 		"RADIUS": 10,
-		"SPEED": 23
+		"SPEED": 23,
+		"SHADOW_BLUR": 25,
+		"SHADOW_MIN_OFFSET": 10,
+		"SHADOW_DIVISOR": 5,
+		"PARTICLE_COUNT": 5,
+		"PARTICLE_SPEED": 250,
+		"PARTICLE_SPEED_VARIANCE": 200,
+		"PARTICLE_LIFESPAN": 0.3
 	},
 	"PADDLE": {
 		"WIDTH": 20,
 		"DIST_FROM_EDGE": 100,
-		"BASE_HEIGHT": 100
+		"BASE_HEIGHT": 100,
+		"BASE_SPEED": 7,
+		"BOOST_SPEED": 20,
+		"BOOST_DURATION_MS": 300,
+		"BOOST_COOLDOWN_MS": 3000,
+		"MIN_HEIGHT": 40,
+		"RESCALE_STEP": 10,
+		"BOOST_RELOAD_RADIUS": 7,
+		"BOOST_RELOAD_COLOR": "black",
+		"BOOST_RELOAD_LINE_WIDTH": 2,
+		"BOOST_PARTICLE_SPEED": 150,
+		"BOOST_PARTICLE_SPEED_VARIANCE": 300,
+		"BOOST_PARTICLE_LIFESPAN": 0.2,
+		"BOOST_PARTICLE_COLOR": "slategray",
+		"BOOST_PARTICLE_COUNT": 3
 	},
 	"GAME": {
 		"BASE_COLOR": "white",
@@ -34,6 +55,12 @@
 			"COLOR": "white",
 			"FONT": "96px Vermin",
 			"ALIGN": "center"
+		},
+		"SCOREBOARD": {
+			"COLOR": "white",
+			"FONT": "48px Vermin",
+			"ALIGN": "center",
+			"Y_POSITION": 60
 		}
 	},
 	"PLAYERS": [{ "IDENTIFIER": "p1" }, { "IDENTIFIER": "p2" }],

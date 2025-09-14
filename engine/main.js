@@ -7,8 +7,22 @@ import Physics from './physics.js';
 import ParticleSystem from './particles/particles.js';
 import Datastorage from './storage/datastorage.js';
 
+/**
+ * Main game engine class that orchestrates all subsystems and manages the game loop.
+ * Provides a complete framework for 2D canvas-based games with input handling,
+ * audio, physics, particles, and persistent storage.
+ */
 export default class GameEngine {
+	/**
+	 * Creates a new GameEngine instance with all required subsystems.
+	 * @param {Object} CONF - Game configuration object containing settings
+	 * @param {Object} TEXTS - Text/string resources for the game
+	 */
 	constructor(CONF, TEXTS) {
+		/**
+		 * Current state of the game
+		 * @type {Object}
+		 */
 		this.gamestate = {
 			multiplayer: false,
 			paused: false,
@@ -142,6 +156,10 @@ export default class GameEngine {
 		}
 	}
 
+	/**
+	 * Registers the game over function to be called when the game ends.
+	 * @param {Function} gameOver - Function to execute when game over state is reached
+	 */
 	registerGameOverFunction(gameOver) {
 		if (typeof gameOver !== 'function') {
 			console.warn('gameOverFunction must be a function');
@@ -150,6 +168,10 @@ export default class GameEngine {
 		this.gameOverFunction = gameOver;
 	}
 
+	/**
+	 * Registers the main game update logic function.
+	 * @param {Function} update - Function containing game logic that runs each frame
+	 */
 	registerUpdateLogic(update) {
 		if (typeof update !== 'function') {
 			console.warn('updateFunction must be a function');
@@ -158,6 +180,10 @@ export default class GameEngine {
 		this.gameUpdateFunction = update;
 	}
 
+	/**
+	 * Registers the main game draw function for rendering.
+	 * @param {Function} draw - Function containing rendering logic that runs each frame
+	 */
 	registerDrawLogic(draw) {
 		if (typeof draw !== 'function') {
 			console.warn('drawFunction must be a function');
@@ -166,6 +192,10 @@ export default class GameEngine {
 		this.gameDrawFunction = draw;
 	}
 
+	/**
+	 * Starts the game engine and begins the main game loop.
+	 * @throws {Error} If the engine failed to initialize properly
+	 */
 	start() {
 		if (this.gamestate.error) {
 			console.error('Cannot start game due to initialization errors');

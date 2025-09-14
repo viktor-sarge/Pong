@@ -1,4 +1,4 @@
-export default class bouncemeter {
+export default class BounceMeter {
     constructor({bounces, radius, color, canvas}) {
         this.standardBouncesAmount = bounces;
         this.bounces = bounces;
