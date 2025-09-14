@@ -90,6 +90,7 @@ function resetGame() {
   scorecounter.reset();
   bouncecounter.reset();
   ball.serve();
+  engine.particles.clear(); // Clear all particles and emitters
 }
 const countdown = new CountdownHandler(CONF, canvasVars.ctx, canvasVars.canvas, resetGame, engine.audio, engine.messages);
 
