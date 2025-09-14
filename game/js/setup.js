@@ -2,11 +2,11 @@ import scoreboard from "./objects/scoreboard.js";
 import bouncemeter from "./objects/bouncemeter.js";
 import Ball from "./objects/ball.js";
 import Paddle from "./objects/paddle.js";
-import CONF from '../config/config.json' assert {type: 'json'};
+import CONF from '../config/config.json' with {type: 'json'};
 import Net from "./objects/net.js";
 import CountdownHandler from "./objects/countdown.js";
 import GameEngine from '../../engine/main.js';
-import TEXTS from '../data/strings.json' assert {type: 'json'};
+import TEXTS from '../data/strings.json' with {type: 'json'};
 import * as helpers from './helpers/helperFunctions.js';
 import OpponentAI from "./objects/opponentAI.js";
 
