@@ -103,6 +103,7 @@ function checkCollisions(player, opponent, ball) {
         : ball.x = player.x + player.width + ball.radius;
     ball.switchDirection();
     ball.accelerate();
+    ball.createBounceParticles("yellow"); // Different color for paddle bounces
     scorecounter.score(player.id);
     player.shrink();
     opponent.grow();

@@ -4,5 +4,5 @@
  * @returns {boolean} True if the angle points right (positive X direction), false otherwise
  */
 export function anglePointingRight(angle) {
-  return Math.cos(angle) > 0; // Positive cosine means right
+	return Math.cos(angle) > 0; // Positive cosine means right
 }
