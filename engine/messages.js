@@ -44,6 +44,13 @@ export default class Messages {
 			originalFont.match(/(\d+)px/)?.[1] || '96'
 		);
 
+		// For very short text (like countdown numbers), use a larger scale
+		if (message.toString().length <= 2) {
+			// Scale short messages to be prominent on screen
+			const smallScale = Math.min(canvasWidth / 8, originalSize * 2);
+			return Math.floor(smallScale);
+		}
+
 		// Calculate target width (80% of canvas width for padding)
 		const targetWidth = canvasWidth * 0.8;
 
