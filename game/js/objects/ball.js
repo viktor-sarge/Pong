@@ -44,6 +44,18 @@ export default class Ball extends Circle {
 		this.physics = physics;
 		this.particles = particles;
 		this.config = config;
+
+		// Pre-calculate shadow settings for performance
+		this.shadowSettings = {
+			color: 'lightgray',
+			blur: this.config.BALL.SHADOW_BLUR,
+			minOffset: this.config.BALL.SHADOW_MIN_OFFSET,
+			divisor: this.config.BALL.SHADOW_DIVISOR,
+		};
+
+		// Cache the last calculated shadow offset to avoid recalculation
+		this.lastShadowOffset = this.shadowSettings.minOffset;
+		this.lastX = x; // Track position changes for shadow updates
 	}
 
 	update(canvasWidth, canvasHeight, deltaTime = 1 / 60) {
@@ -80,23 +92,23 @@ export default class Ball extends Circle {
 	}
 
 	draw(canvasWidth) {
-		// Set the shadow color, offset, and blur
-		this.ctx.shadowColor = 'lightgray';
-		this.ctx.shadowBlur = this.config.BALL.SHADOW_BLUR;
+		// Only recalculate shadow offset if position changed significantly (optimization)
+		const positionDelta = Math.abs(this.x - this.lastX);
+		if (positionDelta > 5) {
+			// Only update every 5 pixels of movement
+			const distanceFromCenter =
+				canvasWidth / 2 - Math.abs(this.x - canvasWidth / 2);
+			this.lastShadowOffset = Math.max(
+				this.shadowSettings.minOffset,
+				distanceFromCenter / this.shadowSettings.divisor
+			);
+			this.lastX = this.x;
+		}
 
-		// Calculate the distance between the ball and the center of the screen
-		const distanceFromCenter =
-			canvasWidth / 2 - Math.abs(this.x - canvasWidth / 2);
-
-		// Calculate the offset of the shadow based on the distance from the center
-		const shadowOffset = Math.max(
-			this.config.BALL.SHADOW_MIN_OFFSET,
-			distanceFromCenter / this.config.BALL.SHADOW_DIVISOR
-		);
-
-		this.ctx.save();
-		// Set the shadow offset based on the distance from the center
-		this.ctx.shadowOffsetY = shadowOffset;
+		// Set shadow properties (cached values)
+		this.ctx.shadowColor = this.shadowSettings.color;
+		this.ctx.shadowBlur = this.shadowSettings.blur;
+		this.ctx.shadowOffsetY = this.lastShadowOffset;
 
 		// Draw the ball as a circle
 		this.ctx.beginPath();
@@ -104,7 +116,10 @@ export default class Ball extends Circle {
 		this.ctx.fillStyle = '#fff';
 		this.ctx.fill();
 		this.ctx.closePath();
-		this.ctx.restore();
+
+		// Reset shadow to avoid affecting other drawings
+		this.ctx.shadowBlur = 0;
+		this.ctx.shadowOffsetY = 0;
 	}
 
 	playBounce() {
