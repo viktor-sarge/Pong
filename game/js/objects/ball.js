@@ -46,10 +46,10 @@ export default class Ball extends Circle {
 		this.config = config;
 	}
 
-	update(canvasWidth, canvasHeight) {
-		// Move the ball based on its speed and angle
-		this.x += this.speed * Math.cos(this.angle);
-		this.y += this.speed * Math.sin(this.angle);
+	update(canvasWidth, canvasHeight, deltaTime = 1 / 60) {
+		// Move the ball based on its speed and angle (time-based movement)
+		this.x += this.speed * Math.cos(this.angle) * deltaTime * 60;
+		this.y += this.speed * Math.sin(this.angle) * deltaTime * 60;
 		this.speed = this.physics.applyFriction(this.speed);
 
 		// Check if the ball collides with the canvas boundaries

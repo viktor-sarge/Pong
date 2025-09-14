@@ -216,7 +216,7 @@ export default class GameEngine {
 		}
 
 		if (this.gameUpdateFunction) {
-			this.gameUpdateFunction();
+			this.gameUpdateFunction(this.deltaTime);
 		}
 	}
 

@@ -116,8 +116,8 @@ function checkCollisions(player, opponent, ball) {
   }
 }
 
-function update() {
-  ball.update(canvasVars.canvasWidth, canvasVars.canvasHeight);
+function update(deltaTime) {
+  ball.update(canvasVars.canvasWidth, canvasVars.canvasHeight, deltaTime);
   if(ball.getSpeed() === 0) {
     if(ball.getSide() === 'left') {
       scorecounter.doublePoints('p2');
