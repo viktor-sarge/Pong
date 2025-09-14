@@ -50,10 +50,9 @@ export default class Paddle extends Rectangle {
 		this.alignment = alignment;
 		this.edgePadding = edgePadding;
 		this.boostOnCooldown = false;
+		this.boostActive = false;
 		this.boostReloadStart = null;
 		this.boostReloadDuration = config.PADDLE.BOOST_COOLDOWN_MS;
-		this.boostReloadRadius = config.PADDLE.BOOST_RELOAD_RADIUS;
-		this.boostReloadColor = config.PADDLE.BOOST_RELOAD_COLOR;
 		this.audio = audio;
 		this.particles = particles;
 		this.soundSwoosh = this.audio.registerSound(
@@ -72,9 +71,18 @@ export default class Paddle extends Rectangle {
 	}
 
 	draw() {
-		this.ctx.fillStyle = this.color;
+		// Determine paddle color based on boost state
+		let paddleColor;
+		if (this.boostActive) {
+			paddleColor = this.config.PADDLE.BOOST_ACTIVE_COLOR; // Red during boost
+		} else if (this.boostOnCooldown) {
+			paddleColor = this.config.PADDLE.COOLDOWN_COLOR; // Grey during cooldown
+		} else {
+			paddleColor = this.config.PADDLE.READY_COLOR; // White when ready
+		}
+
+		this.ctx.fillStyle = paddleColor;
 		this.ctx.fillRect(this.x, this.y, this.width, this.height);
-		this.drawBoostReload(this.ctx);
 	}
 
 	shrink() {
@@ -103,6 +111,9 @@ export default class Paddle extends Rectangle {
 				break;
 		}
 		this.height = this.originalHeight;
+		this.boostOnCooldown = false;
+		this.boostActive = false;
+		this.boostReloadStart = null;
 	}
 
 	realign(x) {
@@ -122,41 +133,20 @@ export default class Paddle extends Rectangle {
 				this.config.PADDLE.BOOST_PARTICLE_COUNT
 			);
 			this.speed = this.config.PADDLE.BOOST_SPEED;
+			this.boostActive = true; // Set boost as active (red)
 			this.boostOnCooldown = true;
+
 			setTimeout(() => {
 				this.speed = this.config.PADDLE.BASE_SPEED;
+				this.boostActive = false; // Boost ends, enter cooldown (grey)
 			}, this.config.PADDLE.BOOST_DURATION_MS);
+
 			setTimeout(() => {
-				this.boostOnCooldown = false;
+				this.boostOnCooldown = false; // Cooldown ends, ready again (white)
 				this.boostReloadStart = null;
 			}, this.config.PADDLE.BOOST_COOLDOWN_MS);
 		} else {
 			// Failed boost click sound here?
-		}
-	}
-
-	drawBoostReload() {
-		if (this.boostOnCooldown) {
-			if (this.boostReloadStart === null) {
-				this.boostReloadStart = Date.now();
-			}
-			const elapsedTime = Date.now() - this.boostReloadStart;
-			const progress = Math.min(
-				elapsedTime / this.boostReloadDuration,
-				1
-			);
-			const centerX = this.x + this.width / 2;
-			const centerY = this.y + this.height / 2;
-			const radius =
-				this.boostReloadRadius - this.boostReloadRadius * progress;
-
-			this.ctx.save();
-			this.ctx.strokeStyle = this.boostReloadColor;
-			this.ctx.lineWidth = this.config.PADDLE.BOOST_RELOAD_LINE_WIDTH;
-			this.ctx.beginPath();
-			this.ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-			this.ctx.stroke();
-			this.ctx.restore();
 		}
 	}
 }
